@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_color">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_margin="10dp"
+                  android:background="@drawable/content_calculate_currency"
+                  android:padding="8dp" android:id="@+id/linearLayout">
+
+        <Spinner android:id="@+id/calculate_char_code_one"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:gravity="center"
+                 android:textSize="@dimen/content_calculate_text_size"
+                 android:textColor="@color/white_color"
+                 android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <Button android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/abc_ic_cab_done_holo_dark"
+            android:layout_marginRight="4dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/nominal_currency_calculate"
+            android:layout_alignBottom="@+id/nominal_currency_calculate"
+            android:id="@+id/apply_calculate"/>
+
+    <EditText android:id="@+id/nominal_currency_calculate"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/list_item_selector"
+              android:padding="8dp"
+              android:maxLength="6"
+              android:gravity="center_horizontal"
+              android:inputType="number|numberDecimal"
+              android:hint="@string/input_nominal_hint"
+              android:layout_below="@+id/linearLayout"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+              android:layout_toLeftOf="@+id/delete_nominal"
+              android:layout_toRightOf="@+id/apply_calculate"/>
+
+    <Button android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_menu_delete"
+            android:layout_alignTop="@+id/nominal_currency_calculate"
+            android:layout_alignParentRight="true"
+            android:id="@+id/delete_nominal"
+            android:layout_alignBottom="@+id/nominal_currency_calculate"/>
+
+    <TextView android:id="@+id/result_calculate"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/list_item_selector"
+              android:padding="6dp"
+              android:layout_margin="10dp"
+              android:gravity="center"
+              android:text="0"
+              android:textSize="@dimen/calculate_result_size"
+              android:textStyle="bold|italic"
+              android:layout_below="@+id/nominal_currency_calculate"
+              android:layout_alignParentLeft="true"
+              android:layout_alignParentBottom="true"/>
+</RelativeLayout>

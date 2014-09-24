@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Financial Assistant</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_about">О приложении</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="input_nominal_hint">Введите номинал</string>
+    <string name="menu_action_refresh">Refresh</string>
+    <string name="menu_action_date">Date</string>
+    <string name="about_app_dialog_message">Приложение Financial Assistant позволяет просматривать стоимости валют, драгоценных металов и ставок рефинансирования в национальном банке РБ с указанием даты. Так же существует возможность расчёта стоимости валюты по указанному номиналу.</string>
+    
+    <string-array name="drawer_texts">
+        <item>Курс валют</item>
+        <item>Архив курсов валют</item>
+        <item>Курс металла</item>
+        <item>Ставка рефинансирования</item>
+        <item>Конвертер валют</item>
+        <item>Динамика валют</item>
+    </string-array>
+
+    <string name="currency_rate_favourite_tab">Курс валюты</string>
+    <string name="metal_rate_favourite_tab">Курс металла</string>
+    <string name="week_dynamic_tab">Неделя</string>
+    <string name="month_dynamic_tab">Месяц</string>
+    <string name="half_year_dynamic_tab">Пол года</string>
+
+    <string name="arg_form_item_key">arg_form_item_key</string>
+    <string name="preferences_key">preferences_key</string>
+    <string name="save_last_date_metal_key">save_last_date_metal_key</string>
+
+</resources>

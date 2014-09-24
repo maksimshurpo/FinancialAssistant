@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#333333">
+
+    <TextView android:id="@+id/drawer_ref_rate"
+              android:layout_width="@dimen/drawer_ref_rate_width_size"
+              android:layout_height="@dimen/drawer_ref_rate_height_size"
+              android:gravity="center"
+              android:layout_marginRight="@dimen/drawer_ref_rate_margin_size"
+              android:text="0"
+              android:visibility="visible"
+              android:background="@drawable/item_list"
+              android:layout_centerVertical="true"
+              android:layout_alignParentRight="true"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_toLeftOf="@+id/drawer_ref_rate">
+        <ImageView android:id="@+id/img_item_drawer"
+                   android:layout_width="@dimen/drawer_image_width_size"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:src="@drawable/ic_gold"
+                   android:layout_marginLeft="@dimen/drawer_image_margin_size"/>
+
+        <TextView android:id="@+id/text_item_drawer"
+                  android:text="dasd ad asdasd a ads"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="@dimen/drawer_title_size"
+                  android:textColor="@color/white_color"
+                  android:layout_marginTop="@dimen/drawer_title_margin_size"
+                  android:layout_marginBottom="@dimen/drawer_title_margin_size"
+                  android:paddingRight="@dimen/drawer_tittle_padding_size"
+                  android:paddingLeft="@dimen/drawer_tittle_padding_size"
+                  android:minHeight="@dimen/drawer_title_min_height_size"
+                  android:gravity="center_vertical"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

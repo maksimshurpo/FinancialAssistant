@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/item_content_size"
+              android:orientation="vertical"
+              android:padding="5dp">
+
+    <RelativeLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_list">
+
+        <TextView android:id="@+id/scale_char_code"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:padding="@dimen/currency_scale_padding_size"
+                  android:gravity="center"
+                  android:text="1 UA"
+                  android:textStyle="bold"
+                  android:textSize="@dimen/currency_scale_size"
+                  android:layout_alignParentTop="true"
+                  android:layout_alignParentLeft="true"/>
+
+        <TextView android:id="@+id/name_currency"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:padding="@dimen/currency_name_padding_size"
+                  android:layout_marginLeft="@dimen/currency_name_margin_size"
+                  android:gravity="center_vertical"
+                  android:text="Австралийский доллар"
+                  android:textSize="@dimen/currency_name_size"
+                  android:layout_alignParentBottom="true"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/scale_char_code"
+                  android:layout_toLeftOf="@+id/rate_currency"/>
+
+        <TextView android:id="@+id/rate_currency"
+                  android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:text="8845.54"
+                  android:paddingRight="@dimen/currency_rate_padding_size"
+                  android:gravity="center"
+                  android:textSize="@dimen/currency_rate_size"
+                  android:textStyle="bold"
+                  android:layout_below="@+id/scale_char_code"
+                  android:layout_alignBottom="@+id/name_currency"
+                  android:layout_toLeftOf="@+id/textView"
+                  android:layout_alignTop="@+id/textView"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:text="руб"
+                  android:paddingRight="@dimen/currency_rate_padding_size"
+                  android:gravity="center"
+                  android:textSize="@dimen/currency_rate_size"
+                  android:textStyle="bold"
+                  android:layout_below="@+id/scale_char_code"
+                  android:layout_alignParentRight="true"
+                  android:layout_alignBottom="@+id/name_currency"
+                  android:id="@+id/textView"/>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:paddingTop="3dp"
+                      android:paddingBottom="3dp"
+                      android:layout_above="@+id/name_currency"
+                      android:layout_alignParentRight="true"
+                      android:layout_alignParentTop="true"
+                      android:layout_alignRight="@+id/rate_currency">
+
+            <TextView android:id="@+id/date_currency"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="01/01/2014"
+                      android:paddingRight="6dp"
+                      android:textSize="@dimen/currency_date_size"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="drawer_icons">
+        <item>@drawable/ic_money</item>
+        <item>@drawable/ic_drawer_archive</item>
+        <item>@drawable/ic_gold</item>
+        <item>@drawable/ic_refinancing</item>
+        <item>@drawable/ic_drawer_calculator</item>
+        <item>@drawable/ic_dynamics</item>
+    </array>
+</resources>
