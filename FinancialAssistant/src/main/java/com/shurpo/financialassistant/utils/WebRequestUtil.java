@@ -1,16 +1,12 @@
 package com.shurpo.financialassistant.utils;
 
 import android.content.Context;
-import android.util.Log;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class WebRequestUtil {
 
     public static final int CURRENCY_RATE_KEY = 1;
     public static final int REF_RATE_KEY = 2;
-    public static final int METAL_KEY = 3;
+    public static final int METALL_KEY = 3;
 
     private static final String URL_CURRENCIES = "http://www.nbrb.by/Services/XmlExRates.aspx";
     private static final String URL_ON_DATE = "ondate=";
@@ -23,8 +19,7 @@ public class WebRequestUtil {
     private static final String URL_INGOTS_PRICE_METAL = "http://www.nbrb.by/Services/XmlIngots.aspx";
     private static final String URL_METAL = "http://www.nbrb.by/Services/XmlMetalsRef.aspx";
 
-    public static final int CURRENCY_RATE_PROCESSOR = 100;
-    public static final int HISTORY_CURRENCY_RATE_PROCESSOR = 200;
+    public static final int CURRENCY_RATE_PROCESSOR = 200;
     public static final int DYNAMIC_PROCESSOR = 300;
     public static final int METAL_PROCESSOR = 400;
     public static final int INGOTS_PRICE_METAL_PROGRESS = 401;
@@ -42,12 +37,8 @@ public class WebRequestUtil {
         progresses = null;
         switch (key){
             case CURRENCY_RATE_KEY:
-                urls = new String[]{getUrlOnDate(URL_CURRENCIES)};
-                progresses = new int[]{CURRENCY_RATE_PROCESSOR};
-                break;
-            case HISTORY_CURRENCY_RATE_PROCESSOR:
                 urls = new String[]{getUrlOnDate(URL_CURRENCIES, preferenceUtil.getHistoryCurrencyDate())};
-                progresses = new int[]{HISTORY_CURRENCY_RATE_PROCESSOR};
+                progresses = new int[]{CURRENCY_RATE_PROCESSOR};
                 break;
             case DYNAMIC_PROCESSOR:
                 urls = new String[]{getUrlDynamic(URL_DYNAMIC, preferenceUtil.getCurrencyId(), DateUtil.getLastMonthDate(6),
@@ -58,7 +49,7 @@ public class WebRequestUtil {
                 urls = new String[]{URL_REF_RATE};
                 progresses = new int[]{REF_RATE_PROCESSOR};
                 break;
-            case METAL_KEY:
+            case METALL_KEY:
                 urls = new String[]{URL_METAL, getUrlOnDate(URL_INGOTS_PRICE_METAL)};
                 progresses = new int[]{METAL_PROCESSOR, INGOTS_PRICE_METAL_PROGRESS};
                 break;

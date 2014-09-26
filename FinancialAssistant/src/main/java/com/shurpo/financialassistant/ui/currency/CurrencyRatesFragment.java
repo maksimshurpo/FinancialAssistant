@@ -12,7 +12,7 @@ import com.shurpo.financialassistant.utils.DateUtil;
 
 public class CurrencyRatesFragment extends BaseFragment {
 
-    public static final int CURRENCY_LOADER = 10;
+    //public static final int CURRENCY_LOADER = 10;
 
     public static CurrencyRatesFragment newInstance(){
         return new CurrencyRatesFragment();
@@ -21,7 +21,7 @@ public class CurrencyRatesFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new CurrencyRateAdapter(getActivity());
+     /*   adapter = new CurrencyRateAdapter(getActivity());
         listView.setAdapter(adapter);
         getActivity().getSupportLoaderManager().initLoader(CURRENCY_LOADER, getBundle(), callbacks);
         //update data when date is new day
@@ -29,7 +29,7 @@ public class CurrencyRatesFragment extends BaseFragment {
         String currentDate = DateUtil.getCurrentDate();
         if (TextUtils.isEmpty(date) || !date.equals(currentDate)){
             refreshData(WebRequestUtil.CURRENCY_RATE_KEY);
-        }
+        }*/
     }
 
     @Override
@@ -50,13 +50,13 @@ public class CurrencyRatesFragment extends BaseFragment {
 
     @Override
     protected void updateData() {
-        getActivity().getSupportLoaderManager().restartLoader(CURRENCY_LOADER, getBundle(), callbacks);
-        stopProgressActionBar();
+       /* getActivity().getSupportLoaderManager().restartLoader(CURRENCY_LOADER, getBundle(), callbacks);
+        stopProgressActionBar();*/
     }
 
     private Bundle getBundle(){
         Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, preference.getDateCurrency());
+        bundle.putString(BUNDLE_KEY, getPreference().getDateCurrency());
         return bundle;
     }
 }

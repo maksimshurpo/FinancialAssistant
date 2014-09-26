@@ -3,7 +3,7 @@ package com.shurpo.financialassistant.model.service;
 import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.util.Log;
+
 import com.shurpo.financialassistant.exceptions.ProcessorException;
 import com.shurpo.financialassistant.model.processor.ProcessorFactory;
 import com.shurpo.financialassistant.model.webservice.RESTExecutor;
@@ -28,8 +28,9 @@ public class SyncService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String[] url = intent.getStringArrayExtra(ServiceHelper.API_URL_EXTRA);
         int[] processor = intent.getIntArrayExtra(ServiceHelper.PROCESSOR_EXTRA);
-        Intent intentReceiver = new Intent(LoaderReceiver.CURRENCY_RECEIVER);
-        intentReceiver.putExtra(LoaderReceiver.EXTRA_LOAD_DATA, loadData(url, processor));
+
+        Intent intentReceiver = new Intent(LoaderInformationReceiver.CURRENCY_RECEIVER);
+        intentReceiver.putExtra(LoaderInformationReceiver.EXTRA_LOAD_DATA, loadData(url, processor));
         sendBroadcast(intentReceiver);
     }
 

@@ -14,11 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.ui.calculate.CalculateFragment;
-import com.shurpo.financialassistant.ui.currency.CurrencyRatesFragment;
-import com.shurpo.financialassistant.ui.currency.HistoryCurrencyRatesFragment;
+import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
 import com.shurpo.financialassistant.ui.adapters.DrawerListAdapter;
 import com.shurpo.financialassistant.ui.dynamics.DynamicsCurrencyFragment;
 import com.shurpo.financialassistant.ui.metal.MetalRateFragment;
@@ -29,12 +28,11 @@ public class FinancialAssistantActivity extends ActionBarActivity {
     private static final String ABOUT_APP_DIALOG_TAG = "ABOUT_APP_DIALOG_TAG";
     private static final int FIRST_ITEM_DRAWER = 0;
 
-    private static final int CURRENCY_RATES = 0;
-    private static final int HISTORY_CURRENCY_RATES = 1;
-    private static final int RATE_METAL = 2;
-    private static final int REFINANCING_RATE = 3;
-    private static final int CALCULATE = 4;
-    private static final int DYNAMIC = 5;
+    private static final int HISTORY_CURRENCY_RATES = 0;
+    private static final int RATE_METAL = 1;
+    private static final int REFINANCING_RATE = 2;
+    private static final int CALCULATE = 3;
+    private static final int DYNAMIC = 4;
 
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
@@ -93,11 +91,8 @@ public class FinancialAssistantActivity extends ActionBarActivity {
     private void selectItem(int position) {
         Fragment fragment;
         switch (position) {
-            case CURRENCY_RATES:
-                fragment = CurrencyRatesFragment.newInstance();
-                break;
             case HISTORY_CURRENCY_RATES:
-                fragment = HistoryCurrencyRatesFragment.newInstance();
+                fragment = CurrencyFragment.newInstance();
                 break;
             case RATE_METAL:
                 fragment = MetalRateFragment.newInstance();

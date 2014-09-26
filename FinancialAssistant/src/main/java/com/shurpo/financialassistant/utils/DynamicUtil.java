@@ -14,7 +14,7 @@ public class DynamicUtil {
 
     public List<CurrencyInfoUtil> getCurrencyInfo(Cursor cursor) {
         while (cursor.moveToNext()) {
-            int currencyId = cursor.getInt(cursor.getColumnIndex(CurrencyInfo.CURRENCY_ID));
+            /*int currencyId = cursor.getInt(cursor.getColumnIndex(CurrencyInfo.CURRENCY_ID));
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             Date date = null;
             try {
@@ -24,7 +24,7 @@ public class DynamicUtil {
             }
             Double rate = cursor.getDouble(cursor.getColumnIndex(CurrencyInfo.RATE));
             CurrencyInfoUtil util = new CurrencyInfoUtil(currencyId, date, rate);
-            currencyInfoUtils.add(util);
+            currencyInfoUtils.add(util);*/
         }
         return currencyInfoUtils;
     }

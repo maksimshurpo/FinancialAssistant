@@ -7,19 +7,22 @@ public final class FinancialAssistantContract {
     private FinancialAssistantContract() {
     }
 
+    public interface Tables {
+        String CURRENCY = "currency";
+        String METAL = "metal";
+        String INGOT_PRICE_METAL = "ingot_price_metal";
+        String REF_RATE = "ref_rate";
+    }
+
     public interface CurrencyColumns {
         String CURRENCY_ID = "currency_id";
+        String CURRENCY_DATE = "currency_date";
         String NUM_CODE = "num_code";
         String CHAR_CODE = "char_code";
         String SCALE = "scale";
         String NAME = "name";
-        String FAVOURITE = "favourite";
-    }
-
-    public interface CurrencyInfoColumns {
-        String CURRENCY_ID = "currency_id";
-        String CURRENCY_DATE = "currency_date";
         String RATE = "rate";
+        String FAVOURITE = "favourite";
     }
 
     public interface MetalColumns {
@@ -50,7 +53,6 @@ public final class FinancialAssistantContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_CURRENCY = "currency";
-    public static final String PATH_CURRENCY_INFO = "currency_info";
     public static final String PATH_METAL = "metal";
     public static final String PATH_METAL_AND_INGOT_PRICE_METAL = "metal_and_ingot_price_metal";
     public static final String PATH_INGOT_PRICE_METAL = "ingot_price_metal";
@@ -58,10 +60,6 @@ public final class FinancialAssistantContract {
 
     public static class Currency implements CurrencyColumns, BaseColumns{
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CURRENCY).build();
-    }
-
-    public static class CurrencyInfo implements CurrencyInfoColumns, BaseColumns {
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CURRENCY_INFO).build();
     }
 
     public static class Metal implements MetalColumns, BaseColumns {

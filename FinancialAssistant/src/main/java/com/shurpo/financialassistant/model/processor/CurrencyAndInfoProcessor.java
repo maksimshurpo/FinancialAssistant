@@ -65,16 +65,13 @@ public class CurrencyAndInfoProcessor extends Processor {
 
         batch.add(ContentProviderOperation.newInsert(Currency.CONTENT_URI)
                 .withValue(Currency.CURRENCY_ID, currencyId)
+                .withValue(Currency.CURRENCY_DATE, currencyDate)
+                .withValue(Currency.RATE, rate)
                 .withValue(Currency.NUM_CODE, numCode)
                 .withValue(Currency.SCALE, scale)
                 .withValue(Currency.CHAR_CODE, charCode)
                 .withValue(Currency.NAME, nameCurrency)
                 .withValue(Currency.FAVOURITE, XMLConstants.FAVOURITE).build());
-
-        batch.add(ContentProviderOperation.newInsert(CurrencyInfo.CONTENT_URI)
-                .withValue(CurrencyInfo.CURRENCY_ID, currencyId)
-                .withValue(CurrencyInfo.CURRENCY_DATE, currencyDate)
-                .withValue(CurrencyInfo.RATE, rate).build());
     }
 
     private String readNumCode(XmlPullParser parser) throws XmlPullParserException, IOException {

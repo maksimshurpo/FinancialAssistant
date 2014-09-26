@@ -28,9 +28,9 @@ public class CalculateFragment extends BaseFragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             positionSpinner = position;
-            Cursor cursor = adapter.getCursor();
+            Cursor cursor = getAdapter().getCursor();
             cursor.moveToPosition(position);
-            costCurrency = cursor.getDouble(cursor.getColumnIndex(FinancialAssistantContract.CurrencyInfo.RATE));
+            costCurrency = cursor.getDouble(cursor.getColumnIndex(FinancialAssistantContract.Currency.RATE));
         }
 
         @Override
@@ -47,15 +47,15 @@ public class CalculateFragment extends BaseFragment {
                         return;
                     }
                     Double result = costCurrency * Double.valueOf(nominalView.getText().toString());
-                    preference.saveResultCalculate("" + CursorResultUtil.getDoubleResult(result) + " руб");
-                    preference.saveNominalCalculate(nominalView.getText().toString());
-                    resultView.setText(preference.getResultCalculate());
+                    getPreference().saveResultCalculate("" + CursorResultUtil.getDoubleResult(result) + " руб");
+                    getPreference().saveNominalCalculate(nominalView.getText().toString());
+                    resultView.setText(getPreference().getResultCalculate());
                     break;
                 case R.id.delete_nominal:
-                    preference.saveNominalCalculate("");
-                    preference.saveResultCalculate("0");
-                    nominalView.setText(preference.getNominalCalculate());
-                    resultView.setText(preference.getResultCalculate());
+                    getPreference().saveNominalCalculate("");
+                    getPreference().saveResultCalculate("0");
+                    nominalView.setText(getPreference().getNominalCalculate());
+                    resultView.setText(getPreference().getResultCalculate());
                     break;
             }
         }
@@ -83,18 +83,18 @@ public class CalculateFragment extends BaseFragment {
         deleteNominalView = (Button)view.findViewById(R.id.delete_nominal);
         spinnerView = (Spinner) view.findViewById(R.id.calculate_char_code_one);
 
-        nominalView.setText(preference.getNominalCalculate());
-        resultView.setText(preference.getResultCalculate());
+        nominalView.setText(getPreference().getNominalCalculate());
+        resultView.setText(getPreference().getResultCalculate());
 
         String[] from = new String[]{FinancialAssistantContract.Currency.NAME};
         int[] to = new int[]{android.R.id.text1};
-        adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0);
+        setAdapter(new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0));
 
         Bundle bundle = new Bundle();
         bundle.putString(BUNDLE_KEY, DateUtil.getCurrentDate());
         getActivity().getSupportLoaderManager().initLoader(10, bundle, callbacks);
 
-        spinnerView.setAdapter(adapter);
+        spinnerView.setAdapter(getAdapter());
         spinnerView.setOnItemSelectedListener(onItemSelectedListener);
 
         applyCalculateView.setOnClickListener(onClickListener);

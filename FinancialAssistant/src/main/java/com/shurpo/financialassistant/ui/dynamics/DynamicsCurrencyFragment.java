@@ -68,9 +68,9 @@ public class DynamicsCurrencyFragment extends BaseFragment {
     private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Cursor cursor = adapter.getCursor();
+            Cursor cursor = getAdapter().getCursor();
             cursor.moveToPosition(position);
-            preference.saveCurrencyId(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_ID)));
+            getPreference().saveCurrencyId(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_ID)));
 
             refreshData(WebRequestUtil.DYNAMIC_PROCESSOR);
             graphView.removeAllSeries();
@@ -100,7 +100,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
     private LoaderManager.LoaderCallbacks<Cursor> dynamicCallBack = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
         public Loader onCreateLoader(int id, Bundle bundle) {
-            return new CursorLoader(getActivity(), CurrencyInfo.CONTENT_URI, null, null, null, null);
+            return null;//new CursorLoader(getActivity(), CurrencyInfo.CONTENT_URI, null, null, null, null);
         }
 
         @Override
@@ -147,9 +147,9 @@ public class DynamicsCurrencyFragment extends BaseFragment {
 
         String[] from = new String[]{Currency.NAME};
         int[] to = new int[]{android.R.id.text1};
-        adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0);
+        setAdapter(new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0));
         spinnerView = (Spinner) view.findViewById(R.id.dynamic_spinner);
-        spinnerView.setAdapter(adapter);
+        spinnerView.setAdapter(getAdapter());
         spinnerView.setOnItemSelectedListener(onItemSelectedListener);
         getActivity().getSupportLoaderManager().initLoader(10, getBundle(), callbacks);
 
@@ -173,7 +173,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         actionBar.removeAllTabs();
-        actionBar.setNavigationMode(ActionBar.DISPLAY_HOME_AS_UP);
+      //  actionBar.setNavigationMode(ActionBar.DISPLAY_HOME_AS_UP);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
 
     private Bundle getBundle() {
         Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, preference.getDateCurrency());
+        bundle.putString(BUNDLE_KEY, getPreference().getDateCurrency());
         return bundle;
     }
 }

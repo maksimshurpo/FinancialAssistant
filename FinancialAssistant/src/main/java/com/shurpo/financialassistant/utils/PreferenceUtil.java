@@ -29,10 +29,10 @@ public class PreferenceUtil {
         editor.commit();
     }
 
-    public void saveLastDateCurrency(String date){
+    /*public void saveLastDateCurrency(String date){
         editor.putString(SAVE_DATE_CURRENCY_KEY, date);
         editor.commit();
-    }
+    }*/
 
     public void saveLastDateMetal(String date) {
         editor.putString(SAVE_DATE_METAL_KEY, date);
@@ -90,7 +90,7 @@ public class PreferenceUtil {
     }
 
     public String getHistoryCurrencyDate(){
-        return preferences.getString(SAVE_HISTORY_CURRENCY_DATE_KEY, null);
+        return preferences.getString(SAVE_HISTORY_CURRENCY_DATE_KEY, DateUtil.getCurrentDate());
     }
 
     public String getResultCalculate(){

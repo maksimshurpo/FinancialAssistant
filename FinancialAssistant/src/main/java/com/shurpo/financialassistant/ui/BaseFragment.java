@@ -19,18 +19,18 @@ import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
 import com.shurpo.financialassistant.model.receivers.NetworkReceiver;
 import com.shurpo.financialassistant.model.service.ServiceHelper;
-import com.shurpo.financialassistant.ui.currency.HistoryCurrencyRatesFragment;
+import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
+import com.shurpo.financialassistant.utils.DateUtil;
 import com.shurpo.financialassistant.utils.WebRequestUtil;
 import com.shurpo.financialassistant.ui.metal.MetalRateFragment;
-import com.shurpo.financialassistant.ui.currency.CurrencyRatesFragment;
 import com.shurpo.financialassistant.ui.refinancing.RefinancingRateFragment;
 import com.shurpo.financialassistant.utils.PreferenceUtil;
 
 public abstract class BaseFragment extends Fragment {
 
-    public class LoaderReceiver extends BroadcastReceiver {
+    public class LoaderInformationReceiver extends BroadcastReceiver {
 
-        public static final String CURRENCY_RECEIVER = "com.shurpo.financialassistant.ui.currency.CurrencyRatesFragment";
+        public static final String CURRENCY_RECEIVER = "com.shurpo.financialassistant";
         public static final String EXTRA_LOAD_DATA = "EXTRA_LOAD_DATA";
 
         @Override
@@ -45,7 +45,13 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public interface OnLoaderCallback {
+        public void onLoadFinished(Loader loader, Object o);
+    }
+
     protected static final String BUNDLE_KEY = "BUNDLE_KEY";
+
+    private OnLoaderCallback onLoaderCallback;
 
     protected LoaderManager.LoaderCallbacks callbacks = new LoaderManager.LoaderCallbacks() {
         @Override
@@ -54,18 +60,13 @@ public abstract class BaseFragment extends Fragment {
             String[] selectArgs = null;
             String args;
             switch (id) {
-                case CurrencyRatesFragment.CURRENCY_LOADER:
-                    args = (String) bundle.get(BUNDLE_KEY);
-                    if (!TextUtils.isEmpty(args)) {
-                        select = CurrencyInfo.CURRENCY_DATE + "=?";
-                        selectArgs = new String[]{args};
-                    }
-                    return new CursorLoader(getActivity(), Currency.CONTENT_URI, null, select, selectArgs, null);
-                case HistoryCurrencyRatesFragment.HISTORY_CURRENCY_LOADER:
+                case CurrencyFragment.CURRENCY_LOADER:
                     String date = preference.getHistoryCurrencyDate();
+                    select = Currency.CURRENCY_DATE + "=?";
                     if (!TextUtils.isEmpty(date)) {
-                        select = CurrencyInfo.CURRENCY_DATE + "=?";
                         selectArgs = new String[]{date};
+                    }else {
+                        selectArgs = new String[]{DateUtil.getCurrentDate()};
                     }
                     return new CursorLoader(getActivity(), Currency.CONTENT_URI, null, select, selectArgs, null);
                 case MetalRateFragment.METAL_LOADER:
@@ -74,8 +75,7 @@ public abstract class BaseFragment extends Fragment {
                         select = IngotPriceMetal.INGOT_PRICE_DATE + "=?";
                         selectArgs = new String[]{args};
                     }
-                    CursorLoader cursorLoader = new CursorLoader(getActivity(), MetalAndIngotPriceMetal.CONTENT_URI, null, select, selectArgs, null);
-                    return cursorLoader;
+                    return new CursorLoader(getActivity(), MetalAndIngotPriceMetal.CONTENT_URI, null, select, selectArgs, null);
                 case RefinancingRateFragment.REF_RATE_LOADER:
                     String orderBy = BaseColumns._ID + " DESC";
                     return new CursorLoader(getActivity(), RefRate.CONTENT_URI, null, null, null, orderBy);
@@ -86,7 +86,7 @@ public abstract class BaseFragment extends Fragment {
 
         @Override
         public void onLoadFinished(Loader loader, Object o) {
-            adapter.swapCursor((Cursor) o);
+            onLoaderCallback.onLoadFinished(loader, o);
         }
 
         @Override
@@ -96,11 +96,11 @@ public abstract class BaseFragment extends Fragment {
     };
 
     private NetworkReceiver networkReceiver;
-    private LoaderReceiver loaderReceiver;
-    protected CursorAdapter adapter;
-    protected PreferenceUtil preference;
-    protected ProgressBar progressBar;
-    protected ListView listView;
+    private LoaderInformationReceiver loaderInformationReceiver;
+    private CursorAdapter adapter;
+    private PreferenceUtil preference;
+    private ProgressBar progressBar;
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,8 +115,6 @@ public abstract class BaseFragment extends Fragment {
         int positionDrawerItem = getArguments().getInt(getString(R.string.arg_form_item_key));
         String title = getResources().getStringArray(R.array.drawer_texts)[positionDrawerItem];
         getActivity().setTitle(title);
-        //init some views.
-        listView = (ListView) rootView.findViewById(R.id.list_layout);
         return rootView;
     }
 
@@ -127,11 +125,14 @@ public abstract class BaseFragment extends Fragment {
         networkReceiver = new NetworkReceiver();
         IntentFilter filterNetwork = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         getActivity().registerReceiver(networkReceiver, filterNetwork);
-        /*register update cursor receiver*/
-        loaderReceiver = new LoaderReceiver();
-        IntentFilter filterLoader = new IntentFilter(LoaderReceiver.CURRENCY_RECEIVER);
-        getActivity().registerReceiver(loaderReceiver, filterLoader);
 
+        /*register update cursor receiver*/
+        loaderInformationReceiver = new LoaderInformationReceiver();
+        IntentFilter filterLoader = new IntentFilter(LoaderInformationReceiver.CURRENCY_RECEIVER);
+        getActivity().registerReceiver(loaderInformationReceiver, filterLoader);
+
+        //init some views.
+        listView = (ListView) view.findViewById(R.id.list_layout);
         progressBar = (ProgressBar) view.findViewById(R.id.update_rate);
 
     }
@@ -143,9 +144,9 @@ public abstract class BaseFragment extends Fragment {
             getActivity().unregisterReceiver(networkReceiver);
             networkReceiver = null;
         }
-        if (loaderReceiver != null) {
-            getActivity().unregisterReceiver(loaderReceiver);
-            loaderReceiver = null;
+        if (loaderInformationReceiver != null) {
+            getActivity().unregisterReceiver(loaderInformationReceiver);
+            loaderInformationReceiver = null;
         }
     }
 
@@ -165,5 +166,29 @@ public abstract class BaseFragment extends Fragment {
 
     protected void stopProgressActionBar() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    public OnLoaderCallback getOnLoaderCallback() {
+        return onLoaderCallback;
+    }
+
+    public void setOnLoaderCallback(OnLoaderCallback onLoaderCallback) {
+        this.onLoaderCallback = onLoaderCallback;
+    }
+
+    public CursorAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(CursorAdapter adapter) {
+        this.adapter = adapter;
+    }
+
+    public ListView getListView() {
+        return listView;
+    }
+
+    public PreferenceUtil getPreference() {
+        return preference;
     }
 }

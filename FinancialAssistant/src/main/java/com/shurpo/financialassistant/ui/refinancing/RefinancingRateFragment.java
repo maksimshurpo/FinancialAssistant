@@ -18,8 +18,8 @@ public class RefinancingRateFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new RefRateAdapter(getActivity(), preference);
-        listView.setAdapter(adapter);
+        setAdapter(new RefRateAdapter(getActivity(), getPreference()));
+        getListView().setAdapter(getAdapter());
         getActivity().getSupportLoaderManager().initLoader(REF_RATE_LOADER, null, callbacks);
     }
 
@@ -27,7 +27,7 @@ public class RefinancingRateFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_refresh, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        if(!preference.isDownloadRefRate()){
+        if(!getPreference().isDownloadRefRate()){
             refreshData(WebRequestUtil.REF_RATE_KEY);
         }
     }

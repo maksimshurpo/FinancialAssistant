@@ -49,9 +49,9 @@ public class CurrencyRateAdapter extends CursorAdapter{
         viewHolder.scaleCharCodeView.setText(CursorResultUtil.getScaleCharCode(cursor));
         viewHolder.nameView.setText(cursor.getString(cursor.getColumnIndex(Currency.NAME)));
 
-        Double result = cursor.getDouble(cursor.getColumnIndex(FinancialAssistantContract.CurrencyInfo.RATE));
+        /*Double result = cursor.getDouble(cursor.getColumnIndex(FinancialAssistantContract.CurrencyInfo.RATE));
         viewHolder.rateView.setText(CursorResultUtil.getDoubleResult(result));
-        viewHolder.dateView.setText(cursor.getString(cursor.getColumnIndex(CurrencyInfo.CURRENCY_DATE)));
+        viewHolder.dateView.setText(cursor.getString(cursor.getColumnIndex(CurrencyInfo.CURRENCY_DATE)));*/
 
     }
 

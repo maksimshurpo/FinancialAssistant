@@ -20,8 +20,8 @@ public class MetalRateFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new MetalRateAdapter(getActivity());
-        listView.setAdapter(adapter);
+        setAdapter(new MetalRateAdapter(getActivity()));
+        getListView().setAdapter(getAdapter());
         getActivity().getSupportLoaderManager().initLoader(METAL_LOADER, getBundle(), callbacks);
     }
 
@@ -29,11 +29,11 @@ public class MetalRateFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_refresh, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        String date = preference.getDateMetal();
+        String date = getPreference().getDateMetal();
         String currentDate = DateUtil.getCurrentDate();
         //update data when date is new day
         if (TextUtils.isEmpty(date) || !date.equals(currentDate)){
-            refreshData(WebRequestUtil.METAL_KEY);
+            refreshData(WebRequestUtil.METALL_KEY);
         }
     }
 
@@ -41,7 +41,7 @@ public class MetalRateFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                refreshData(WebRequestUtil.METAL_KEY);
+                refreshData(WebRequestUtil.METALL_KEY);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -55,7 +55,7 @@ public class MetalRateFragment extends BaseFragment {
 
     private Bundle getBundle(){
         Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, preference.getDateMetal());
+        bundle.putString(BUNDLE_KEY, getPreference().getDateMetal());
         return bundle;
     }
 }

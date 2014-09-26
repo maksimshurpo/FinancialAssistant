@@ -19,7 +19,7 @@ public class DynamicCurrencyProcessor extends Processor {
     @Override
     protected void execute(XmlPullParser parser, ContentResolver resolver) throws XmlPullParserException, IOException, RemoteException, OperationApplicationException {
         parser.require(XmlPullParser.START_TAG, ns, XMLConstants.DYNAMIC_CURRENCY_ELEMENT);
-        batch.add(ContentProviderOperation.newDelete(CurrencyInfo.CONTENT_URI).build());
+      //  batch.add(ContentProviderOperation.newDelete(CurrencyInfo.CONTENT_URI).build());
         currencyId = parser.getAttributeValue(XMLConstants.ID_ATTRIBUTE);
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -51,10 +51,10 @@ public class DynamicCurrencyProcessor extends Processor {
             }
         }
         Log.d("qwert", "Currency_id = " + currencyId + ", currency_date = " + date + ", rate =  " + rate);
-        batch.add(ContentProviderOperation.newInsert(CurrencyInfo.CONTENT_URI)
+       /* batch.add(ContentProviderOperation.newInsert(CurrencyInfo.CONTENT_URI)
                 .withValue(CurrencyInfo.CURRENCY_ID, currencyId)
                 .withValue(CurrencyInfo.CURRENCY_DATE, date)
-                .withValue(CurrencyInfo.RATE, rate).build());
+                .withValue(CurrencyInfo.RATE, rate).build());*/
 
     }
 

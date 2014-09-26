@@ -10,22 +10,7 @@ import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*
 public class FinancialAssistantDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "assistant.db";
-    private static final int DATABASE_VERSION = 1;
-
-
-    public interface Tables {
-        String CURRENCY = "currency";
-        String CURRENCY_INFO = "currency_info";
-        String METAL = "metal";
-        String INGOT_PRICE_METAL = "ingot_price_metal";
-        String REF_RATE = "ref_rate";
-
-        String CURRENCY_JOIN_CURRENCY_INFO = "currency INNER JOIN currency_info ON "
-                + "currency.currency_id = currency_info.currency_id";
-
-        String META_JOIN_INGOT_PRICE_METAL = "metal INNER JOIN ingot_price_metal ON "
-                + "metal.metal_id = ingot_price_metal.metal_id";
-    }
+    private static final int DATABASE_VERSION = 7;
 
     public FinancialAssistantDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,18 +21,14 @@ public class FinancialAssistantDatabase extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + Tables.CURRENCY + " ( "
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Currency.CURRENCY_ID + " INTEGER NOT NULL, "
+                + Currency.CURRENCY_DATE + " TEXT NOT NULL, "
+                + Currency.RATE + " REAL NOT NULL, "
                 + Currency.NUM_CODE + " INTEGER NOT NULL, "
                 + Currency.CHAR_CODE + " TEXT NOT NULL, "
                 + Currency.SCALE + " INTEGER NOT NULL, "
                 + Currency.NAME + " TEXT NOT NULL, "
                 + Currency.FAVOURITE + " INTEGER NOT NULL, "
                 + "UNIQUE (" + Currency.CURRENCY_ID + ") ON CONFLICT IGNORE );");
-        db.execSQL("CREATE TABLE " + Tables.CURRENCY_INFO + " ( "
-                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + CurrencyInfo.CURRENCY_ID + " INTEGER NOT NULL , "
-                + CurrencyInfo.CURRENCY_DATE + " TEXT NOT NULL , "
-                + CurrencyInfo.RATE + " REAL NOT NULL, "
-                + "UNIQUE (" + CurrencyInfo.CURRENCY_ID + " , " + CurrencyInfo.CURRENCY_DATE + ") ON CONFLICT IGNORE );");
         db.execSQL("CREATE TABLE " + Tables.METAL + " ( "
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Metal.METAL_ID + " INTEGER NOT NULL, "
@@ -79,7 +60,6 @@ public class FinancialAssistantDatabase extends SQLiteOpenHelper {
         if (oldVersion < newVersion) {
             Log.d(FinancialAssistantDatabase.class.getName(), "new version of DB " + newVersion);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.CURRENCY);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.CURRENCY_INFO);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.METAL);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.INGOT_PRICE_METAL);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.REF_RATE);

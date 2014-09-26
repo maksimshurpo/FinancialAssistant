@@ -7,8 +7,6 @@ public class ProcessorFactory {
         switch (action) {
             case WebRequestUtil.CURRENCY_RATE_PROCESSOR:
                 return new CurrencyAndInfoProcessor();
-            case WebRequestUtil.HISTORY_CURRENCY_RATE_PROCESSOR:
-                return new CurrencyAndInfoProcessor();
             case WebRequestUtil.DYNAMIC_PROCESSOR:
                 return new DynamicCurrencyProcessor();
             case WebRequestUtil.METAL_PROCESSOR:

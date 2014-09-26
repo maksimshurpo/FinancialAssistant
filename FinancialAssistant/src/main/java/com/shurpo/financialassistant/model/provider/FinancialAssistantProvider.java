@@ -6,16 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.utils.PreferenceUtil;
 import com.shurpo.financialassistant.utils.SelectionBuilder;
-import com.shurpo.financialassistant.model.provider.FinancialAssistantDatabase.Tables;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
 
 public class FinancialAssistantProvider extends ContentProvider {
 
-    private static final int CURRENCY = 100;
-    private static final int CURRENCY_INFO = 101;
+    private String TAG_LOG = getClass().getName();
+
+    private static final int CURRENCY = 101;
     private static final int METAL = 400;
     private static final int INGOTS_PRICE_METAL = 401;
     private static final int METAL_AND_INGOT_PRICE_METAL = 402;
@@ -31,7 +30,6 @@ public class FinancialAssistantProvider extends ContentProvider {
         String authority = FinancialAssistantContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, FinancialAssistantContract.PATH_CURRENCY, CURRENCY);
-        matcher.addURI(authority, FinancialAssistantContract.PATH_CURRENCY_INFO, CURRENCY_INFO);
         matcher.addURI(authority, FinancialAssistantContract.PATH_METAL, METAL);
         matcher.addURI(authority, FinancialAssistantContract.PATH_INGOT_PRICE_METAL, INGOTS_PRICE_METAL);
         matcher.addURI(authority, FinancialAssistantContract.PATH_METAL_AND_INGOT_PRICE_METAL, METAL_AND_INGOT_PRICE_METAL);
@@ -53,13 +51,10 @@ public class FinancialAssistantProvider extends ContentProvider {
         SelectionBuilder builder = new SelectionBuilder();
         switch (urlType) {
             case CURRENCY:
-                builder.table(Tables.CURRENCY_JOIN_CURRENCY_INFO);
-                break;
-            case CURRENCY_INFO:
-                builder.table(Tables.CURRENCY_INFO);
+                builder.table(Tables.CURRENCY);
                 break;
             case METAL_AND_INGOT_PRICE_METAL:
-                builder.table(Tables.META_JOIN_INGOT_PRICE_METAL);
+               // builder.table(Tables.META_JOIN_INGOT_PRICE_METAL);
                 break;
             case REF_RATE:
                 builder.table(Tables.REF_RATE);
@@ -85,10 +80,7 @@ public class FinancialAssistantProvider extends ContentProvider {
         switch (uriType) {
             case CURRENCY:
                 db.insert(Tables.CURRENCY, null, values);
-                break;
-            case CURRENCY_INFO:
-                db.insert(Tables.CURRENCY_INFO, null, values);
-                String dateCurrency = values.getAsString(CurrencyInfo.CURRENCY_DATE);
+                String dateCurrency = values.getAsString(Currency.CURRENCY_DATE);
                 if (!TextUtils.isEmpty(dateCurrency)) {
                     preference.saveLastDateCurrency(dateCurrency);
                 }
@@ -118,9 +110,10 @@ public class FinancialAssistantProvider extends ContentProvider {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         int uriType = uriMatcher.match(uri);
         switch (uriType){
-            case CURRENCY_INFO:
-                Log.d("zxcvbn", "delete table currency_info");
-                return db.delete(Tables.CURRENCY_INFO, null, null);
+            case CURRENCY:
+                int deleteNum = db.delete(Tables.CURRENCY, null, null);
+                Log.d(TAG_LOG, "Has deleted information in the table of currency");
+                return deleteNum;
             default:
                 throw new IllegalArgumentException("Unknown uri: " + uri);
         }
@@ -130,6 +123,4 @@ public class FinancialAssistantProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
-
-
 }
