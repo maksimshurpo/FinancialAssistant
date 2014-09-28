@@ -11,7 +11,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CurrencyAndInfoProcessor extends Processor {
+public class CurrencyProcessor extends Processor {
 
     private ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
     private String currencyDate;

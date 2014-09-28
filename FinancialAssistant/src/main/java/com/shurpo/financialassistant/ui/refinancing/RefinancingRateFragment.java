@@ -28,7 +28,7 @@ public class RefinancingRateFragment extends BaseFragment {
         inflater.inflate(R.menu.menu_refresh, menu);
         super.onCreateOptionsMenu(menu, inflater);
         if(!getPreference().isDownloadRefRate()){
-            refreshData(WebRequestUtil.REF_RATE_KEY);
+            refreshData(WebRequestUtil.RequestUri.refRate);
         }
     }
 
@@ -36,7 +36,7 @@ public class RefinancingRateFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                refreshData(WebRequestUtil.REF_RATE_KEY);
+                refreshData(WebRequestUtil.RequestUri.refRate);
                 return true;
         }
         return super.onOptionsItemSelected(item);

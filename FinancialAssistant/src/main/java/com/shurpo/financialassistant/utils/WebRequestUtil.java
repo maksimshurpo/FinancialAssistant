@@ -2,11 +2,18 @@ package com.shurpo.financialassistant.utils;
 
 import android.content.Context;
 
-public class WebRequestUtil {
+import com.shurpo.financialassistant.model.processor.ProcessorFactory;
 
+public class WebRequestUtil {
+/*
     public static final int CURRENCY_RATE_KEY = 1;
-    public static final int REF_RATE_KEY = 2;
-    public static final int METALL_KEY = 3;
+    public static final int DYNAMIC_KEY = 2;
+    public static final int REF_RATE_KEY = 3;
+    public static final int METAL_KEY = 4;*/
+
+    public enum RequestUri {
+        currencyRate, dynamic, refRate, metal;
+    }
 
     private static final String URL_CURRENCIES = "http://www.nbrb.by/Services/XmlExRates.aspx";
     private static final String URL_ON_DATE = "ondate=";
@@ -19,11 +26,6 @@ public class WebRequestUtil {
     private static final String URL_INGOTS_PRICE_METAL = "http://www.nbrb.by/Services/XmlIngots.aspx";
     private static final String URL_METAL = "http://www.nbrb.by/Services/XmlMetalsRef.aspx";
 
-    public static final int CURRENCY_RATE_PROCESSOR = 200;
-    public static final int DYNAMIC_PROCESSOR = 300;
-    public static final int METAL_PROCESSOR = 400;
-    public static final int INGOTS_PRICE_METAL_PROGRESS = 401;
-    public static final int REF_RATE_PROCESSOR = 500;
 
     private String[] urls;
     private int[] progresses;
@@ -33,25 +35,25 @@ public class WebRequestUtil {
         preferenceUtil = new PreferenceUtil(context);
     }
 
-    public WebRequestUtil url(int key){
+    public WebRequestUtil url(RequestUri key){
         progresses = null;
         switch (key){
-            case CURRENCY_RATE_KEY:
-                urls = new String[]{getUrlOnDate(URL_CURRENCIES, preferenceUtil.getHistoryCurrencyDate())};
-                progresses = new int[]{CURRENCY_RATE_PROCESSOR};
+            case currencyRate:
+                urls = new String[]{getUrlOnDate(URL_CURRENCIES, preferenceUtil.getLastDateCurrency())};
+                progresses = new int[]{ProcessorFactory.CURRENCY_RATE_PROCESSOR};
                 break;
-            case DYNAMIC_PROCESSOR:
+            case dynamic:
                 urls = new String[]{getUrlDynamic(URL_DYNAMIC, preferenceUtil.getCurrencyId(), DateUtil.getLastMonthDate(6),
                         DateUtil.getCurrentDate())};
-                progresses = new int[]{DYNAMIC_PROCESSOR};
+                progresses = new int[]{ProcessorFactory.DYNAMIC_PROCESSOR};
                 break;
-            case REF_RATE_KEY:
+            case refRate:
                 urls = new String[]{URL_REF_RATE};
-                progresses = new int[]{REF_RATE_PROCESSOR};
+                progresses = new int[]{ProcessorFactory.REF_RATE_PROCESSOR};
                 break;
-            case METALL_KEY:
+            case metal:
                 urls = new String[]{URL_METAL, getUrlOnDate(URL_INGOTS_PRICE_METAL)};
-                progresses = new int[]{METAL_PROCESSOR, INGOTS_PRICE_METAL_PROGRESS};
+                progresses = new int[]{ProcessorFactory.METAL_PROCESSOR, ProcessorFactory.INGOTS_PRICE_METAL_PROGRESS};
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown key for URL : " + key);

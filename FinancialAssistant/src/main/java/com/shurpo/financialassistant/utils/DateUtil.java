@@ -7,8 +7,7 @@ import java.util.Date;
 public class DateUtil {
 
     public static String getCurrentDate(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        return dateFormat.format(new Date());
+        return getFormatDate(new Date());
     }
 
     public static String getLastMonthDate(int countMonth){
@@ -20,8 +19,12 @@ public class DateUtil {
         }
         calendar.roll(Calendar.MONTH, -countMonth);
         Date dateFormat = calendar.getTime();
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        return format.format(dateFormat);
+        return getFormatDate(dateFormat);
+    }
+
+    public static String getFormatDate(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        return dateFormat.format(date);
     }
 
     public static String getLastWeekDate(int countWeeks){

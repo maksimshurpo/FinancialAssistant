@@ -1,4 +1,4 @@
-package com.shurpo.financialassistant.model.webservice;
+package com.shurpo.financialassistant.model.service;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -21,15 +21,14 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-public class RESTExecutor implements Executor{
+public class TransportHttp {
 
     private ContentResolver resolver;
 
-    public RESTExecutor(ContentResolver resolver) {
+    public TransportHttp(ContentResolver resolver) {
         this.resolver = resolver;
     }
 
-    @Override
     public boolean execute(String urlString, Processor processor) throws ProcessorException {
         boolean isConnected = false;
         try {
@@ -37,14 +36,7 @@ public class RESTExecutor implements Executor{
             Request request = new Request.Builder().url(urlString).build();
             OkHttpClient client = new OkHttpClient();
             Call call = client.newCall(request);
-            Response response = call.execute();/*
-            URL url = new URL(urlString);
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setReadTimeout(10000);
-            connection.setConnectTimeout(15000);
-            connection.setRequestMethod("GET");
-            connection.setDoInput(true);
-            connection.connect();*/
+            Response response = call.execute();
 
             InputStream stream = response.body().byteStream();
             processor.parse(stream, resolver, FinancialAssistantContract.CONTENT_AUTHORITY);
@@ -55,8 +47,8 @@ public class RESTExecutor implements Executor{
             throw new ProcessorException("incorrect url : " + e.getMessage());
         } catch (IOException e) {
             throw new ProcessorException("disconnect HttpUrlConnection : " + e.getMessage());
-        /*} catch (XmlPullParserException e) {
-            throw new ProcessorException("incorrect xml parser : " + e.getMessage());*/
+        } catch (XmlPullParserException e) {
+            throw new ProcessorException("incorrect xml parser : " + e.getMessage());
         } catch (Exception e) {
             throw new ProcessorException("InputStream has error : " + e.getMessage());
         }

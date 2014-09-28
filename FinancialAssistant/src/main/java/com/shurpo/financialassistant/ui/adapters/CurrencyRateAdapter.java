@@ -33,6 +33,7 @@ public class CurrencyRateAdapter extends CursorAdapter{
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+
         ViewHolder viewHolder = new ViewHolder();
         View view = inflater.inflate(R.layout.item_currency_view, null);
         viewHolder.scaleCharCodeView = (TextView)view.findViewById(R.id.scale_char_code);
@@ -49,9 +50,9 @@ public class CurrencyRateAdapter extends CursorAdapter{
         viewHolder.scaleCharCodeView.setText(CursorResultUtil.getScaleCharCode(cursor));
         viewHolder.nameView.setText(cursor.getString(cursor.getColumnIndex(Currency.NAME)));
 
-        /*Double result = cursor.getDouble(cursor.getColumnIndex(FinancialAssistantContract.CurrencyInfo.RATE));
+        Double result = cursor.getDouble(cursor.getColumnIndex(Currency.RATE));
         viewHolder.rateView.setText(CursorResultUtil.getDoubleResult(result));
-        viewHolder.dateView.setText(cursor.getString(cursor.getColumnIndex(CurrencyInfo.CURRENCY_DATE)));*/
+        viewHolder.dateView.setText(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_DATE)));
 
     }
 

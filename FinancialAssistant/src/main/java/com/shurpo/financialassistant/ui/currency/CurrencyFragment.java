@@ -4,22 +4,19 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
 import android.view.*;
 import android.widget.DatePicker;
-
 import com.shurpo.financialassistant.R;
-import com.shurpo.financialassistant.model.provider.FinancialAssistantContract;
 import com.shurpo.financialassistant.ui.adapters.CurrencyRateAdapter;
 import com.shurpo.financialassistant.utils.DateUtil;
 import com.shurpo.financialassistant.utils.WebRequestUtil;
 import com.shurpo.financialassistant.ui.BaseFragment;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class CurrencyFragment extends BaseFragment {
+
+    private String LOG_TAG = getClass().getName();
 
     public static final int CURRENCY_LOADER = 20;
 
@@ -28,14 +25,13 @@ public class CurrencyFragment extends BaseFragment {
         public void onLoadFinished(Loader loader, Object o) {
             Cursor cursor = (Cursor) o;
             cursor.moveToFirst();
-            String dateOfCurrency = null;
-            if (cursor.getCount() != 0) {
-                dateOfCurrency = cursor.getString(cursor.getColumnIndex(FinancialAssistantContract.Currency.CURRENCY_DATE));
-            }
+
             /**If the table has not got information about date*/
-            if (TextUtils.isEmpty(dateOfCurrency)) {
-                refreshData(WebRequestUtil.CURRENCY_RATE_KEY);
-            }
+            /*if (cursor.getCount() == 0) {
+                Log.d(LOG_TAG, "Cursor has got " + cursor.getCount() + " count of row.");
+                refreshData(WebRequestUtil.RequestUri.currencyRate);
+            }else {
+            }*/
             getAdapter().swapCursor(cursor);
         }
     };
@@ -46,9 +42,9 @@ public class CurrencyFragment extends BaseFragment {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, monthOfYear, dayOfMonth);
             Date dateFormat = calendar.getTime();
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            getPreference().setHistoryCurrencyDate(format.format(dateFormat));
-            refreshData(WebRequestUtil.CURRENCY_RATE_KEY);
+            String dateString = DateUtil.getFormatDate(dateFormat);
+            getPreference().saveLastDateCurrency(dateString);
+            refreshData(WebRequestUtil.RequestUri.currencyRate);
         }
     };
 

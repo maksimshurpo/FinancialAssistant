@@ -1,7 +1,6 @@
 package com.shurpo.financialassistant.ui;
 
 import android.content.*;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -61,13 +60,9 @@ public abstract class BaseFragment extends Fragment {
             String args;
             switch (id) {
                 case CurrencyFragment.CURRENCY_LOADER:
-                    String date = preference.getHistoryCurrencyDate();
+                    String date = preference.getLastDateCurrency();
                     select = Currency.CURRENCY_DATE + "=?";
-                    if (!TextUtils.isEmpty(date)) {
-                        selectArgs = new String[]{date};
-                    }else {
-                        selectArgs = new String[]{DateUtil.getCurrentDate()};
-                    }
+                    selectArgs = new String[]{date};
                     return new CursorLoader(getActivity(), Currency.CONTENT_URI, null, select, selectArgs, null);
                 case MetalRateFragment.METAL_LOADER:
                     args = (String) bundle.get(BUNDLE_KEY);
@@ -152,11 +147,11 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void updateData();
 
-    protected void refreshData(int webRequestInt) {
+    protected void refreshData(WebRequestUtil.RequestUri requestUri) {
         if (NetworkReceiver.refreshDisplay) {
             ServiceHelper serviceHelper = ServiceHelper.getInstance(getActivity());
             WebRequestUtil webRequest = new WebRequestUtil(getActivity());
-            serviceHelper.execute(webRequest.url(webRequestInt));
+            serviceHelper.execute(webRequest.url(requestUri));
             progressBar.setVisibility(View.VISIBLE);
         } else {
             Toast.makeText(getActivity(), "Связь потеряна", Toast.LENGTH_SHORT).show();

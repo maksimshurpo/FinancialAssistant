@@ -33,7 +33,7 @@ public class MetalRateFragment extends BaseFragment {
         String currentDate = DateUtil.getCurrentDate();
         //update data when date is new day
         if (TextUtils.isEmpty(date) || !date.equals(currentDate)){
-            refreshData(WebRequestUtil.METALL_KEY);
+            refreshData(WebRequestUtil.RequestUri.metal);
         }
     }
 
@@ -41,7 +41,7 @@ public class MetalRateFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                refreshData(WebRequestUtil.METALL_KEY);
+                refreshData(WebRequestUtil.RequestUri.metal);
                 return true;
         }
         return super.onOptionsItemSelected(item);

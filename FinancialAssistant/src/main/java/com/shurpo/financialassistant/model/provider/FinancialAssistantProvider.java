@@ -81,6 +81,7 @@ public class FinancialAssistantProvider extends ContentProvider {
             case CURRENCY:
                 db.insert(Tables.CURRENCY, null, values);
                 String dateCurrency = values.getAsString(Currency.CURRENCY_DATE);
+                Log.d(TAG_LOG, dateCurrency);
                 if (!TextUtils.isEmpty(dateCurrency)) {
                     preference.saveLastDateCurrency(dateCurrency);
                 }

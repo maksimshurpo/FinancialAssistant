@@ -72,7 +72,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
             cursor.moveToPosition(position);
             getPreference().saveCurrencyId(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_ID)));
 
-            refreshData(WebRequestUtil.DYNAMIC_PROCESSOR);
+            refreshData(WebRequestUtil.RequestUri.dynamic);
             graphView.removeAllSeries();
             isSendReceiver = false;
         }
@@ -194,7 +194,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                refreshData(WebRequestUtil.DYNAMIC_PROCESSOR);
+                refreshData(WebRequestUtil.RequestUri.dynamic);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -208,7 +208,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
 
     private Bundle getBundle() {
         Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, getPreference().getDateCurrency());
+        bundle.putString(BUNDLE_KEY, getPreference().getLastDateCurrency());
         return bundle;
     }
 }

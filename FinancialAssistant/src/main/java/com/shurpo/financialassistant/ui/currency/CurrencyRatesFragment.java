@@ -42,7 +42,7 @@ public class CurrencyRatesFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                refreshData(WebRequestUtil.CURRENCY_RATE_KEY);
+                refreshData(WebRequestUtil.RequestUri.currencyRate);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -56,7 +56,7 @@ public class CurrencyRatesFragment extends BaseFragment {
 
     private Bundle getBundle(){
         Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, getPreference().getDateCurrency());
+        bundle.putString(BUNDLE_KEY, getPreference().getLastDateCurrency());
         return bundle;
     }
 }
