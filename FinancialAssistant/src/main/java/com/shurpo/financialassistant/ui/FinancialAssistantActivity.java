@@ -4,8 +4,12 @@ import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,13 +17,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.shurpo.financialassistant.R;
+import com.shurpo.financialassistant.ui.adapters.DynamicPageAdapter;
 import com.shurpo.financialassistant.ui.calculate.CalculateFragment;
 import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
 import com.shurpo.financialassistant.ui.adapters.DrawerListAdapter;
+import com.shurpo.financialassistant.ui.dynamics.ActionBarManager;
 import com.shurpo.financialassistant.ui.dynamics.DynamicsCurrencyFragment;
+import com.shurpo.financialassistant.ui.dynamics.FragmentDynamicFragment;
 import com.shurpo.financialassistant.ui.metal.MetalRateFragment;
 import com.shurpo.financialassistant.ui.refinancing.RefinancingRateFragment;
 
@@ -40,6 +49,7 @@ public class FinancialAssistantActivity extends ActionBarActivity {
     private DrawerListAdapter adapter;
     private CharSequence title;
     private String[] formTitles;
+    private ActionBarManager actionBarManager;
 
     private ListView.OnItemClickListener drawerItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -53,6 +63,7 @@ public class FinancialAssistantActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
+        actionBarManager = new ActionBarManager(this);
         title = getTitle();
         formTitles = getResources().getStringArray(R.array.drawer_texts);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -64,8 +75,8 @@ public class FinancialAssistantActivity extends ActionBarActivity {
         drawerListView.setAdapter(adapter);
         drawerListView.setOnItemClickListener(drawerItemClickListener);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        actionBarManager.setDisplayHomeAsUpEnabled(true);
+        actionBarManager.setHomeButtonEnabled(true);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -90,6 +101,10 @@ public class FinancialAssistantActivity extends ActionBarActivity {
 
     private void selectItem(int position) {
         Fragment fragment;
+        Bundle args = new Bundle();
+        args.putInt(getString(R.string.arg_form_item_key), position);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
         switch (position) {
             case HISTORY_CURRENCY_RATES:
                 fragment = CurrencyFragment.newInstance();
@@ -104,16 +119,43 @@ public class FinancialAssistantActivity extends ActionBarActivity {
                 fragment = CalculateFragment.newInstance();
                 break;
             case DYNAMIC:
-                fragment = DynamicsCurrencyFragment.newInstance();
+                fragment = FragmentDynamicFragment.newInstance();
+
+                /*dynamicPageView.setVisibility(View.VISIBLE);
+                contentLayout.setVisibility(View.GONE);
+
+
+                dynamicPagerAdapter = new DynamicPageAdapter(fragmentManager);
+                dynamicPageView.setAdapter(dynamicPagerAdapter);
+                actionBarManager.getActionBar().setSelectedNavigationItem(dynamicPageView.getCurrentItem());
+                dynamicPageView.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float v, int i2) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int i) {
+                        actionBarManager.getActionBar().setSelectedNavigationItem(i);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
+
+                    }
+                });
+                fragment = null;*/
                 break;
             default:
                 throw new IllegalArgumentException("Unknown item of drawer");
         }
-        Bundle args = new Bundle();
-        args.putInt(getString(R.string.arg_form_item_key), position);
-        fragment.setArguments(args);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (position != DYNAMIC){
+            /*dynamicPageView.setVisibility(View.GONE);
+            contentLayout.setVisibility(View.VISIBLE);*/
+            actionBarManager.removeAllActionBarTags();
+        }
+        fragment.setArguments(args);
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         drawerListView.setItemChecked(position, true);

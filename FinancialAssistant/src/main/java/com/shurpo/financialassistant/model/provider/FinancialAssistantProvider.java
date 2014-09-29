@@ -54,7 +54,7 @@ public class FinancialAssistantProvider extends ContentProvider {
                 builder.table(Tables.CURRENCY);
                 break;
             case METAL_AND_INGOT_PRICE_METAL:
-               // builder.table(Tables.META_JOIN_INGOT_PRICE_METAL);
+                builder.table(Tables.META_JOIN_INGOT_PRICE_METAL);
                 break;
             case REF_RATE:
                 builder.table(Tables.REF_RATE);
@@ -92,7 +92,7 @@ public class FinancialAssistantProvider extends ContentProvider {
             case INGOTS_PRICE_METAL:
                 String dateMetal = values.getAsString(IngotPriceMetal.INGOT_PRICE_DATE);
                 if (!TextUtils.isEmpty(dateMetal)) {
-                    preference.saveLastDateMetal(dateMetal);
+                    preference.saveDateMetal(dateMetal);
                 }
                 db.insert(Tables.INGOT_PRICE_METAL, null, values);
                 break;

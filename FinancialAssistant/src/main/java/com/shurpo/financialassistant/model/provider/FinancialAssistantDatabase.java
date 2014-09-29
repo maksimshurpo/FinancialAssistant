@@ -10,7 +10,7 @@ import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*
 public class FinancialAssistantDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "assistant.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 11;
 
     public FinancialAssistantDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,7 +28,7 @@ public class FinancialAssistantDatabase extends SQLiteOpenHelper {
                 + Currency.SCALE + " INTEGER NOT NULL, "
                 + Currency.NAME + " TEXT NOT NULL, "
                 + Currency.FAVOURITE + " INTEGER NOT NULL, "
-                + "UNIQUE (" + Currency.CURRENCY_ID + ") ON CONFLICT IGNORE );");
+                + "UNIQUE (" + Currency.CURRENCY_ID + " , " + Currency.CURRENCY_DATE + ") ON CONFLICT IGNORE );");
         db.execSQL("CREATE TABLE " + Tables.METAL + " ( "
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Metal.METAL_ID + " INTEGER NOT NULL, "

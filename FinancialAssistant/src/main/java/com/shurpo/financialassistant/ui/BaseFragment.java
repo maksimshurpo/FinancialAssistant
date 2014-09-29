@@ -18,6 +18,7 @@ import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
 import com.shurpo.financialassistant.model.receivers.NetworkReceiver;
 import com.shurpo.financialassistant.model.service.ServiceHelper;
+import com.shurpo.financialassistant.ui.calculate.CalculateFragment;
 import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
 import com.shurpo.financialassistant.utils.DateUtil;
 import com.shurpo.financialassistant.utils.WebRequestUtil;
@@ -48,7 +49,7 @@ public abstract class BaseFragment extends Fragment {
         public void onLoadFinished(Loader loader, Object o);
     }
 
-    protected static final String BUNDLE_KEY = "BUNDLE_KEY";
+    protected static final String LOADER_BUNDLE_KEY = "LOADER_BUNDLE_KEY";
 
     private OnLoaderCallback onLoaderCallback;
 
@@ -60,16 +61,18 @@ public abstract class BaseFragment extends Fragment {
             String args;
             switch (id) {
                 case CurrencyFragment.CURRENCY_LOADER:
-                    String date = preference.getLastDateCurrency();
+                    String dateCurrency = preference.getLastDateCurrency();
+                    /**there is date for calculate fragment.*/
+                    if (bundle != null) {
+                        dateCurrency = bundle.getString(LOADER_BUNDLE_KEY);
+                    }
                     select = Currency.CURRENCY_DATE + "=?";
-                    selectArgs = new String[]{date};
+                    selectArgs = new String[]{dateCurrency};
                     return new CursorLoader(getActivity(), Currency.CONTENT_URI, null, select, selectArgs, null);
                 case MetalRateFragment.METAL_LOADER:
-                    args = (String) bundle.get(BUNDLE_KEY);
-                    if (!TextUtils.isEmpty(args)) {
-                        select = IngotPriceMetal.INGOT_PRICE_DATE + "=?";
-                        selectArgs = new String[]{args};
-                    }
+                    String dateMetal = preference.getDateMetal();
+                    select = IngotPriceMetal.INGOT_PRICE_DATE + "=?";
+                    selectArgs = new String[]{dateMetal};
                     return new CursorLoader(getActivity(), MetalAndIngotPriceMetal.CONTENT_URI, null, select, selectArgs, null);
                 case RefinancingRateFragment.REF_RATE_LOADER:
                     String orderBy = BaseColumns._ID + " DESC";

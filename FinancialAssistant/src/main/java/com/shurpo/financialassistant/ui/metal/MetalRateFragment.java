@@ -1,7 +1,10 @@
 package com.shurpo.financialassistant.ui.metal;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.*;
 import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.utils.WebRequestUtil;
@@ -11,7 +14,24 @@ import com.shurpo.financialassistant.utils.DateUtil;
 
 public class MetalRateFragment extends BaseFragment {
 
+    private String LOG_TAG = getClass().getName();
+
     public static final int METAL_LOADER = 40;
+    private OnLoaderCallback onLoadFinishedCallback = new OnLoaderCallback() {
+        @Override
+        public void onLoadFinished(Loader loader, Object o) {
+            Cursor cursor = (Cursor) o;
+            cursor.moveToFirst();
+
+            /**If the table has not got information about date*/
+            if (cursor.getCount() == 0) {
+                Log.d(LOG_TAG, "Cursor has got " + cursor.getCount() + " count of rows.");
+                refreshData(WebRequestUtil.RequestUri.metal);
+            }else {
+                getAdapter().swapCursor(cursor);
+            }
+        }
+    };
 
     public static MetalRateFragment newInstance(){
         return new MetalRateFragment();
@@ -20,9 +40,10 @@ public class MetalRateFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setOnLoaderCallback(onLoadFinishedCallback);
         setAdapter(new MetalRateAdapter(getActivity()));
+        getActivity().getSupportLoaderManager().initLoader(METAL_LOADER, null, callbacks);
         getListView().setAdapter(getAdapter());
-        getActivity().getSupportLoaderManager().initLoader(METAL_LOADER, getBundle(), callbacks);
     }
 
     @Override
@@ -49,13 +70,8 @@ public class MetalRateFragment extends BaseFragment {
 
     @Override
     public void updateData() {
-        getActivity().getSupportLoaderManager().restartLoader(METAL_LOADER, getBundle(), callbacks);
+        getActivity().getSupportLoaderManager().restartLoader(METAL_LOADER, null, callbacks);
         stopProgressActionBar();
     }
 
-    private Bundle getBundle(){
-        Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, getPreference().getDateMetal());
-        return bundle;
-    }
 }

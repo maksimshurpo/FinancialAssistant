@@ -26,6 +26,7 @@ import com.shurpo.financialassistant.graphview.GraphViewSeries;
 import com.shurpo.financialassistant.graphview.LineGraphView;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
 import com.shurpo.financialassistant.ui.BaseFragment;
+import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
 import com.shurpo.financialassistant.utils.CurrencyInfoUtil;
 import com.shurpo.financialassistant.utils.DynamicUtil;
 import com.shurpo.financialassistant.utils.GraphUtil;
@@ -46,13 +47,9 @@ public class DynamicsCurrencyFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             if (intent.getBooleanExtra(EXTRA_NOTIFY_GRAPH, false)) {
                 //положить данные в графику.
-
-
             }
         }
     }
-
-    private static final String CURRENCY_ID_KEY = "CURRENCY_ID_KEY";
 
     private DynamicUtil dynamicUtil;
     private NotifyGraphReceiver receiver;
@@ -97,10 +94,10 @@ public class DynamicsCurrencyFragment extends BaseFragment {
         }
     };
 
-    private LoaderManager.LoaderCallbacks<Cursor> dynamicCallBack = new LoaderManager.LoaderCallbacks<Cursor>() {
+    /*private LoaderManager.LoaderCallbacks<Cursor> dynamicCallBack = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
         public Loader onCreateLoader(int id, Bundle bundle) {
-            return null;//new CursorLoader(getActivity(), CurrencyInfo.CONTENT_URI, null, null, null, null);
+            return new CursorLoader(getActivity(), Currency.CONTENT_URI, null, null, null, null);
         }
 
         @Override
@@ -112,7 +109,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
         @Override
         public void onLoaderReset(Loader loader) {
         }
-    };
+    };*/
 
     private void drawGraph(){
         layout.removeAllViews();
@@ -151,7 +148,7 @@ public class DynamicsCurrencyFragment extends BaseFragment {
         spinnerView = (Spinner) view.findViewById(R.id.dynamic_spinner);
         spinnerView.setAdapter(getAdapter());
         spinnerView.setOnItemSelectedListener(onItemSelectedListener);
-        getActivity().getSupportLoaderManager().initLoader(10, getBundle(), callbacks);
+        getActivity().getSupportLoaderManager().initLoader(0, getBundle(), callbacks);
 
         actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -166,7 +163,6 @@ public class DynamicsCurrencyFragment extends BaseFragment {
         receiver = new NotifyGraphReceiver();
         IntentFilter filter = new IntentFilter(NotifyGraphReceiver.CURRENCY_RECEIVER);
         getActivity().registerReceiver(receiver, filter);
-
     }
 
     @Override
@@ -203,12 +199,12 @@ public class DynamicsCurrencyFragment extends BaseFragment {
     @Override
     protected void updateData() {
         stopProgressActionBar();
-        getActivity().getSupportLoaderManager().initLoader(0, null, dynamicCallBack);
+      //  getActivity().getSupportLoaderManager().initLoader(0, null, dynamicCallBack);
     }
 
     private Bundle getBundle() {
         Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, getPreference().getLastDateCurrency());
+        bundle.putString(LOADER_BUNDLE_KEY, getPreference().getLastDateCurrency());
         return bundle;
     }
 }

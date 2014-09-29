@@ -2,8 +2,10 @@ package com.shurpo.financialassistant.ui.calculate;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,10 @@ import android.widget.*;
 import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract;
 import com.shurpo.financialassistant.ui.BaseFragment;
+import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
 import com.shurpo.financialassistant.utils.CursorResultUtil;
 import com.shurpo.financialassistant.utils.DateUtil;
+import com.shurpo.financialassistant.utils.WebRequestUtil;
 
 public class CalculateFragment extends BaseFragment {
 
@@ -90,10 +94,10 @@ public class CalculateFragment extends BaseFragment {
         int[] to = new int[]{android.R.id.text1};
         setAdapter(new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0));
 
-        Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY, DateUtil.getCurrentDate());
-        getActivity().getSupportLoaderManager().initLoader(10, bundle, callbacks);
-
+        /*Bundle bundle = new Bundle();
+        bundle.putString(LOADER_BUNDLE_KEY, DateUtil.getCurrentDate());
+        getActivity().getSupportLoaderManager().initLoader(CurrencyFragment.CURRENCY_LOADER, bundle, callbacks);
+*/
         spinnerView.setAdapter(getAdapter());
         spinnerView.setOnItemSelectedListener(onItemSelectedListener);
 

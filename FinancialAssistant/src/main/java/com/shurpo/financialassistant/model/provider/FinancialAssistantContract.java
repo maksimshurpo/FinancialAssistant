@@ -12,6 +12,9 @@ public final class FinancialAssistantContract {
         String METAL = "metal";
         String INGOT_PRICE_METAL = "ingot_price_metal";
         String REF_RATE = "ref_rate";
+
+        String META_JOIN_INGOT_PRICE_METAL = METAL + " inner join " + INGOT_PRICE_METAL + " on "
+                + METAL + "." + MetalColumns.METAL_ID + " = " + INGOT_PRICE_METAL + "." + IngotPriceMetalColumns.METAL_ID;
     }
 
     public interface CurrencyColumns {

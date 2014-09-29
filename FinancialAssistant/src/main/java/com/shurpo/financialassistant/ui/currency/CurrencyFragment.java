@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.*;
 import android.widget.DatePicker;
 import com.shurpo.financialassistant.R;
@@ -27,12 +28,12 @@ public class CurrencyFragment extends BaseFragment {
             cursor.moveToFirst();
 
             /**If the table has not got information about date*/
-            /*if (cursor.getCount() == 0) {
-                Log.d(LOG_TAG, "Cursor has got " + cursor.getCount() + " count of row.");
+            if (cursor.getCount() == 0) {
+                Log.d(LOG_TAG, "Cursor has got " + cursor.getCount() + " count of rows.");
                 refreshData(WebRequestUtil.RequestUri.currencyRate);
             }else {
-            }*/
-            getAdapter().swapCursor(cursor);
+                getAdapter().swapCursor(cursor);
+            }
         }
     };
 

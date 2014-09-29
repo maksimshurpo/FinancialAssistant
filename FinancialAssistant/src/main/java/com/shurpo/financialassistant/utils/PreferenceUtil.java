@@ -11,7 +11,6 @@ public class PreferenceUtil {
     public static final String SAVE_DATE_METAL_KEY = "SAVE_DATE_METAL_KEY";
     public static final String DOWNLOAD_REF_RATE_KEY = "DOWNLOAD_REF_RATE_KEY";
     public static final String SAVE_CURRENT_REF_RATE_KEY = "SAVE_CURRENT_REF_RATE_KEY";
-   // public static final String SAVE_HISTORY_CURRENCY_DATE_KEY = "SAVE_HISTORY_CURRENCY_DATE_KEY";
     public static final String SAVE_RESULT_CALCULATE_KEY = "SAVE_RESULT_CALCULATE_KEY";
     public static final String SAVE_NOMINAL_CALCULATE_KEY = "SAVE_NOMINAL_CALCULATE_KEY";
     public static final String SAVE_IS_SEND_RECEIVER_KEY  = "SAVE_IS_SEND_RECEIVER_KEY";
@@ -34,7 +33,7 @@ public class PreferenceUtil {
         editor.commit();
     }
 
-    public void saveLastDateMetal(String date) {
+    public void saveDateMetal(String date) {
         editor.putString(SAVE_DATE_METAL_KEY, date);
         editor.commit();
     }
@@ -47,12 +46,7 @@ public class PreferenceUtil {
     public void setCurrentRefRate(String refRate){
         editor.putString(SAVE_CURRENT_REF_RATE_KEY, refRate);
         editor.commit();
-    }/*
-
-    public void setHistoryCurrencyDate(String date){
-        editor.putString(SAVE_HISTORY_CURRENCY_DATE_KEY, date);
-        editor.commit();
-    }*/
+    }
 
     public void saveResultCalculate(String result){
         editor.putString(SAVE_RESULT_CALCULATE_KEY, result);
@@ -74,11 +68,11 @@ public class PreferenceUtil {
     }
 
     public String getLastDateCurrency(){
-        return preferences.getString(SAVE_LAST_DATE_CURRENCY_KEY, null);
+        return preferences.getString(SAVE_LAST_DATE_CURRENCY_KEY, DateUtil.getCurrentDate());
     }
 
     public String getDateMetal(){
-        return preferences.getString(SAVE_DATE_METAL_KEY, null);
+        return preferences.getString(SAVE_DATE_METAL_KEY, DateUtil.getCurrentDate());
     }
 
     public boolean isDownloadRefRate(){
@@ -88,10 +82,7 @@ public class PreferenceUtil {
     public String getCurrentRefRate(){
         return preferences.getString(SAVE_CURRENT_REF_RATE_KEY, "0");
     }
-/*
-    public String getHistoryCurrencyDate(){
-        return preferences.getString(SAVE_HISTORY_CURRENCY_DATE_KEY, DateUtil.getCurrentDate());
-    }*/
+
 
     public String getResultCalculate(){
         return preferences.getString(SAVE_RESULT_CALCULATE_KEY, "0");
