@@ -1,5 +1,7 @@
 package com.shurpo.financialassistant.model.processor;
 
+import com.shurpo.financialassistant.utils.PreferenceUtil;
+
 public class ProcessorFactory {
 
     public static final int CURRENCY_RATE_PROCESSOR = 200;
@@ -8,18 +10,18 @@ public class ProcessorFactory {
     public static final int INGOTS_PRICE_METAL_PROGRESS = 401;
     public static final int REF_RATE_PROCESSOR = 500;
 
-    public static Processor createProcessor(int action) throws UnsupportedOperationException {
+    public static Processor createProcessor(PreferenceUtil preferenceUtil, int action) throws UnsupportedOperationException {
         switch (action) {
             case CURRENCY_RATE_PROCESSOR:
-                return new CurrencyProcessor();
+                return new CurrencyProcessor(preferenceUtil);
             case DYNAMIC_PROCESSOR:
-                return new DynamicCurrencyProcessor();
+                return new DynamicCurrencyProcessor(preferenceUtil);
             case METAL_PROCESSOR:
-                return new MetalsProcessor();
+                return new MetalsProcessor(preferenceUtil);
             case INGOTS_PRICE_METAL_PROGRESS:
-                return new IngotPriceMetalProcessor();
+                return new IngotPriceMetalProcessor(preferenceUtil);
             case REF_RATE_PROCESSOR:
-                return new RefRateProcessor();
+                return new RefRateProcessor(preferenceUtil);
             default:
                 throw new UnsupportedOperationException("No processor was found to match the requested URI. " + action);
         }

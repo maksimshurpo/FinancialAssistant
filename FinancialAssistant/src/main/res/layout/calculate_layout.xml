@@ -3,20 +3,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey_color">
+                android:background="@color/DodgerBlue">
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
                   android:layout_margin="10dp"
-                  android:background="@drawable/content_calculate_currency"
                   android:padding="8dp" android:id="@+id/linearLayout">
 
         <Spinner android:id="@+id/calculate_char_code_one"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:layout_weight="1"
-                 android:gravity="center"
+                 android:gravity="center_horizontal"
                  android:textSize="@dimen/content_calculate_text_size"
                  android:textColor="@color/white_color"
                  android:textStyle="bold"/>

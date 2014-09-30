@@ -7,6 +7,8 @@ import android.os.RemoteException;
 import android.util.Log;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
 import com.shurpo.financialassistant.utils.DateUtil;
+import com.shurpo.financialassistant.utils.PreferenceUtil;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
@@ -15,6 +17,10 @@ import java.util.ArrayList;
 public class IngotPriceMetalProcessor extends Processor {
 
     private String date;
+
+    public IngotPriceMetalProcessor(PreferenceUtil preferenceUtil) {
+        super(preferenceUtil);
+    }
 
     @Override
     protected void execute(XmlPullParser parser, ContentResolver resolver) throws XmlPullParserException, IOException, RemoteException, OperationApplicationException {

@@ -3,12 +3,18 @@ package com.shurpo.financialassistant.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.shurpo.financialassistant.model.provider.FinancialAssistantContract;
+
 public class PreferenceUtil {
 
     public static final String PREFERENCE_KEY = "PREFERENCE_KEY";
     public static final String SAVE_CURRENCY_ID_KEY = "SAVE_CURRENCY_ID_KEY";
     public static final String SAVE_LAST_DATE_CURRENCY_KEY = "SAVE_LAST_DATE_CURRENCY_KEY";
     public static final String SAVE_DATE_METAL_KEY = "SAVE_DATE_METAL_KEY";
+    public static final String SAVE_CHAR_DATA_KEY = "SAVE_CHAR_DATA_KEY";
+    public static final String SAVE_SCALE_CURRENCY = "SAVE_SCALE_CURRENCY";
+    public static final String SAVE_NAME_CURRENCY = "SAVE_NAME_CURRENCY";
+    public static final String NUM_CODE_CURRENCY_KEY = "NUM_CODE_CURRENCY_KEY";
     public static final String DOWNLOAD_REF_RATE_KEY = "DOWNLOAD_REF_RATE_KEY";
     public static final String SAVE_CURRENT_REF_RATE_KEY = "SAVE_CURRENT_REF_RATE_KEY";
     public static final String SAVE_RESULT_CALCULATE_KEY = "SAVE_RESULT_CALCULATE_KEY";
@@ -63,6 +69,26 @@ public class PreferenceUtil {
         editor.commit();
     }
 
+    public void saveNumCodeCurrency(int numCode){
+        editor.putInt(NUM_CODE_CURRENCY_KEY, numCode);
+        editor.commit();
+    }
+
+    public void saveCharCodeCurrency(String charCode){
+        editor.putString(SAVE_CHAR_DATA_KEY, charCode);
+        editor.commit();
+    }
+
+    public void saveScaleCurrency(int scale){
+        editor.putInt(SAVE_SCALE_CURRENCY, scale);
+        editor.commit();
+    }
+
+    public void saveNameCurrency(String name){
+        editor.putString(SAVE_NAME_CURRENCY, name);
+        editor.commit();
+    }
+
     public String getCurrencyId(){
         return preferences.getString(SAVE_CURRENCY_ID_KEY, null);
     }
@@ -98,5 +124,21 @@ public class PreferenceUtil {
 
     public SharedPreferences getPreferences() {
         return preferences;
+    }
+
+    public int getNumCodeCurrency(){
+        return preferences.getInt(NUM_CODE_CURRENCY_KEY, 0);
+    }
+
+    public String getCharCodeCurrency(){
+        return preferences.getString(SAVE_CHAR_DATA_KEY, null);
+    }
+
+    public int getScaleCurrency(){
+        return preferences.getInt(SAVE_SCALE_CURRENCY, 0);
+    }
+
+    public String getNameCurrency(){
+        return preferences.getString(SAVE_NAME_CURRENCY, null);
     }
 }

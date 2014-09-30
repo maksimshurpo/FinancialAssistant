@@ -1,6 +1,6 @@
 <android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -15,9 +15,8 @@
         android:id="@+id/left_drawer"
         style="@style/navigationDrawer"
         android:layout_gravity="start"
-        android:background="#333333"
+        android:background="@color/SteelBlue"
         android:choiceMode="singleChoice"
-        android:divider="#666666"
-        android:dividerHeight="1dp"
-        android:scrollbars="none"/>
+        android:divider="@color/CornflowerBlue"
+        android:dividerHeight="1dp"/>
 </android.support.v4.widget.DrawerLayout>

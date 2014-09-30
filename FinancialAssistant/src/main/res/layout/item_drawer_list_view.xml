@@ -4,7 +4,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#333333">
+                android:background="@color/SteelBlue">
 
     <TextView android:id="@+id/drawer_ref_rate"
               android:layout_width="@dimen/drawer_ref_rate_width_size"

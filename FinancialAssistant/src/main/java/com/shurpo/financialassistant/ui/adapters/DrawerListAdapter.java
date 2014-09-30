@@ -20,7 +20,7 @@ public class DrawerListAdapter extends BaseAdapter {
     }
 
     private static final int ELEMENTS_DOESNT_EXISTS = 0;
-    private static final int POSITION_REF_RATE = 3;
+    private static final int POSITION_REF_RATE = 2;
 
     private LayoutInflater layoutInflater;
     private String[] drawerTextArray;

@@ -4,12 +4,8 @@ import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -17,18 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.shurpo.financialassistant.R;
-import com.shurpo.financialassistant.ui.adapters.DynamicPageAdapter;
 import com.shurpo.financialassistant.ui.calculate.CalculateFragment;
 import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
 import com.shurpo.financialassistant.ui.adapters.DrawerListAdapter;
 import com.shurpo.financialassistant.ui.dynamics.ActionBarManager;
-import com.shurpo.financialassistant.ui.dynamics.DynamicsCurrencyFragment;
-import com.shurpo.financialassistant.ui.dynamics.FragmentDynamicFragment;
+import com.shurpo.financialassistant.ui.dynamics.DynamicCurrencyFragment;
 import com.shurpo.financialassistant.ui.metal.MetalRateFragment;
 import com.shurpo.financialassistant.ui.refinancing.RefinancingRateFragment;
 
@@ -64,6 +55,8 @@ public class FinancialAssistantActivity extends ActionBarActivity {
         setContentView(R.layout.main_layout);
 
         actionBarManager = new ActionBarManager(this);
+        actionBarManager.getActionBar().setIcon(R.drawable.ic_ab_drawer);
+
         title = getTitle();
         formTitles = getResources().getStringArray(R.array.drawer_texts);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -119,40 +112,13 @@ public class FinancialAssistantActivity extends ActionBarActivity {
                 fragment = CalculateFragment.newInstance();
                 break;
             case DYNAMIC:
-                fragment = FragmentDynamicFragment.newInstance();
-
-                /*dynamicPageView.setVisibility(View.VISIBLE);
-                contentLayout.setVisibility(View.GONE);
-
-
-                dynamicPagerAdapter = new DynamicPageAdapter(fragmentManager);
-                dynamicPageView.setAdapter(dynamicPagerAdapter);
-                actionBarManager.getActionBar().setSelectedNavigationItem(dynamicPageView.getCurrentItem());
-                dynamicPageView.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int i, float v, int i2) {
-
-                    }
-
-                    @Override
-                    public void onPageSelected(int i) {
-                        actionBarManager.getActionBar().setSelectedNavigationItem(i);
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int i) {
-
-                    }
-                });
-                fragment = null;*/
+                fragment = DynamicCurrencyFragment.newInstance();
                 break;
             default:
                 throw new IllegalArgumentException("Unknown item of drawer");
         }
 
         if (position != DYNAMIC){
-            /*dynamicPageView.setVisibility(View.GONE);
-            contentLayout.setVisibility(View.VISIBLE);*/
             actionBarManager.removeAllActionBarTags();
         }
         fragment.setArguments(args);

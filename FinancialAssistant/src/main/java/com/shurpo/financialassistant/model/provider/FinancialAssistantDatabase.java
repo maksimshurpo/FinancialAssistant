@@ -10,7 +10,7 @@ import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*
 public class FinancialAssistantDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "assistant.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 14;
 
     public FinancialAssistantDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

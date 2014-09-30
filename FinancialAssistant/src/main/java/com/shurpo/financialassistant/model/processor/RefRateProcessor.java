@@ -5,12 +5,18 @@ import android.content.ContentResolver;
 import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
+import com.shurpo.financialassistant.utils.PreferenceUtil;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class RefRateProcessor extends Processor {
+
+    public RefRateProcessor(PreferenceUtil preferenceUtil) {
+        super(preferenceUtil);
+    }
 
     @Override
     protected void execute(XmlPullParser parser, ContentResolver resolver) throws XmlPullParserException, IOException, RemoteException, OperationApplicationException {

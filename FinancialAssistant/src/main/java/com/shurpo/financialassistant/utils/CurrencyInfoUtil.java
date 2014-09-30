@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CurrencyInfoUtil {
+
     private int id;
     private Date date;
     private Double rate;

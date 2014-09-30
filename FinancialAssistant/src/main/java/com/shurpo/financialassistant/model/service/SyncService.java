@@ -8,6 +8,7 @@ import android.util.Log;
 import com.shurpo.financialassistant.exceptions.ProcessorException;
 import com.shurpo.financialassistant.model.processor.ProcessorFactory;
 import com.shurpo.financialassistant.ui.BaseFragment.*;
+import com.shurpo.financialassistant.utils.PreferenceUtil;
 
 public class SyncService extends IntentService {
     private String LOG_TAG = getClass().getName();
@@ -46,7 +47,7 @@ public class SyncService extends IntentService {
                 throw new ProcessorException("urls and processors don't equals");
             }
             for (int i = 0; i < url.length; i++){
-                boolean isTrue = transportHttp.execute(url[i], ProcessorFactory.createProcessor(processor[i]));
+                boolean isTrue = transportHttp.execute(url[i], ProcessorFactory.createProcessor(new PreferenceUtil(getApplicationContext()), processor[i]));
                 if (isTrue){
                     countTrue++;
                 }

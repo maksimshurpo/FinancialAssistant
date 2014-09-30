@@ -25,28 +25,40 @@ public class GraphUtil {
     public static final int PERIOD_MONTH = 30;
     public static final int PERIOD_HALF_YEAR = 180;
 
+    private ArrayList<String> dynamicsRates;
+    private ArrayList<String> dynamicsDates;
+
     private final String DATE_SEPARATOR = "/";
 
-    public void initGraphViewData(int period, DynamicUtil dynamicUtil) {
-        GraphView.GraphViewData[] graphViewData = new GraphView.GraphViewData[dynamicUtil.getCurrencyInfoUtils().size()];
-        List<CurrencyInfoUtil> utils = dynamicUtil.getCurrencyInfoUtils();
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-
-        ArrayList<Double> dynamicsRates = new ArrayList<Double>();
-        ArrayList<String> dynamicsDates = new ArrayList<String>();
-        for(CurrencyInfoUtil util:utils){
-            dynamicsRates.add(util.getRate());
-            dynamicsDates.add(format.format(util.getDate()));
+    public void breakToArrayRatesAndDates(List<CurrencyInfoUtil> listUtils){
+        dynamicsRates = new ArrayList<String>();
+        dynamicsDates = new ArrayList<String>();
+        for(CurrencyInfoUtil util : listUtils){
+            dynamicsRates.add("" + util.getRate());
+            dynamicsDates.add(DateUtil.getFormatDate(util.getDate()));
         }
+    }
 
+    public void initGraphViewData() {
+        //GraphView.GraphViewData[] graphViewData = new GraphView.GraphViewData[dynamicsRates.size()];
 
-        weekDynamics = getDynamics( dynamicsRates.subList(dynamicsRates.size() - 7, dynamicsRates.size()));
-        monthDynamics = getDynamics(dynamicsRates.subList(dynamicsRates.size() - 30, dynamicsRates.size()));
-        halfYearDynamics = getDynamics(dynamicsRates.subList(dynamicsRates.size() - 180, dynamicsRates.size()));
+        ArrayList<Double> ratesDouble = convertingListStringToDouble(dynamicsRates);
+
+        weekDynamics = getDynamics(ratesDouble.subList(dynamicsRates.size() - 7, dynamicsRates.size()));
+        monthDynamics = getDynamics(ratesDouble.subList(dynamicsRates.size() - 30, dynamicsRates.size()));
+        halfYearDynamics = getDynamics(ratesDouble.subList(dynamicsRates.size() - 180, dynamicsRates.size()));
 
         weekLabels = getLabels(PERIOD_WEEK, dynamicsDates.subList(dynamicsDates.size() - 7, dynamicsDates.size()));
         monthLabels = getLabels(PERIOD_MONTH, dynamicsDates.subList(dynamicsDates.size() - 30, dynamicsDates.size()));
         halfYearLabels = getLabels(PERIOD_HALF_YEAR, dynamicsDates.subList(dynamicsDates.size() - 180, dynamicsDates.size()));
+    }
+
+    private ArrayList<Double> convertingListStringToDouble(ArrayList<String> values){
+        ArrayList<Double> result = new ArrayList<Double>();
+        for (String value : values){
+            result.add(Double.valueOf(value));
+        }
+        return result;
     }
 
     private GraphView.GraphViewData[] getDynamics(List<Double> weekList){
@@ -149,5 +161,21 @@ public class GraphUtil {
                 break;
         }
         return labels;
+    }
+
+    public ArrayList<String> getDynamicsRates() {
+        return dynamicsRates;
+    }
+
+    public ArrayList<String> getDynamicsDates() {
+        return dynamicsDates;
+    }
+
+    public void setDynamicsRates(ArrayList<String> dynamicsRates) {
+        this.dynamicsRates = dynamicsRates;
+    }
+
+    public void setDynamicsDates(ArrayList<String> dynamicsDates) {
+        this.dynamicsDates = dynamicsDates;
     }
 }

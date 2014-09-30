@@ -15,17 +15,21 @@ import com.shurpo.financialassistant.ui.dynamics.DynamicFragment;
 public class DynamicPageAdapter extends FragmentStatePagerAdapter{
 
     public static final String POSITION_PAGE_KEY = "POSITION_PAGE_KEY";
+    public static final String LIST_DYNAMIC_RATES_BUNDLE_KEY = "LIST_DYNAMIC_RATES_BUNDLE_KEY";
+    public static final String LIST_DYNAMIC_DATE_BUNDLE_KEY = "LIST_DYNAMIC_DATE_BUNDLE_KEY";
 
     private static final int COUNT_PAGE = 3;
 
-    public DynamicPageAdapter(FragmentManager fm) {
+    private Bundle bundle;
+
+    public DynamicPageAdapter(FragmentManager fm, Bundle bundle) {
         super(fm);
+        this.bundle = bundle;
     }
 
     @Override
     public Fragment getItem(int i) {
         Fragment fragment = DynamicFragment.newInstance();
-        Bundle bundle = new Bundle();
         bundle.putInt(POSITION_PAGE_KEY, i);
         fragment.setArguments(bundle);
         return fragment;

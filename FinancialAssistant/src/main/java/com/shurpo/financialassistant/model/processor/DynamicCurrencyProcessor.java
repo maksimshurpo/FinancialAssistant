@@ -6,6 +6,8 @@ import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import android.util.Log;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
+import com.shurpo.financialassistant.utils.PreferenceUtil;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
@@ -13,13 +15,18 @@ import java.util.ArrayList;
 
 public class DynamicCurrencyProcessor extends Processor {
 
+    private String LOG_TAG = getClass().getName();
+
     private ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
     private String currencyId;
+
+    public DynamicCurrencyProcessor(PreferenceUtil preferenceUtil) {
+        super(preferenceUtil);
+    }
 
     @Override
     protected void execute(XmlPullParser parser, ContentResolver resolver) throws XmlPullParserException, IOException, RemoteException, OperationApplicationException {
         parser.require(XmlPullParser.START_TAG, ns, XMLConstants.DYNAMIC_CURRENCY_ELEMENT);
-      //  batch.add(ContentProviderOperation.newDelete(CurrencyInfo.CONTENT_URI).build());
         currencyId = parser.getAttributeValue(XMLConstants.ID_ATTRIBUTE);
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -50,11 +57,17 @@ public class DynamicCurrencyProcessor extends Processor {
                 skip(parser);
             }
         }
-        Log.d("qwert", "Currency_id = " + currencyId + ", currency_date = " + date + ", rate =  " + rate);
-       /* batch.add(ContentProviderOperation.newInsert(CurrencyInfo.CONTENT_URI)
-                .withValue(CurrencyInfo.CURRENCY_ID, currencyId)
-                .withValue(CurrencyInfo.CURRENCY_DATE, date)
-                .withValue(CurrencyInfo.RATE, rate).build());*/
+        Log.d(LOG_TAG, "Currency_id = " + currencyId + ", currency_date = " + date + ", rate =  " + rate);
+        batch.add(ContentProviderOperation.newInsert(Currency.CONTENT_URI)
+                .withValue(Currency.CURRENCY_ID, currencyId)
+                .withValue(Currency.CURRENCY_DATE, date)
+                .withValue(Currency.RATE, rate)
+                .withValue(Currency.NUM_CODE, preferenceUtil.getNumCodeCurrency())
+                .withValue(Currency.CHAR_CODE, preferenceUtil.getCharCodeCurrency())
+                .withValue(Currency.SCALE, preferenceUtil.getScaleCurrency())
+                .withValue(Currency.NAME, preferenceUtil.getNameCurrency())
+                .withValue(Currency.FAVOURITE, 0)
+                .build());
 
     }
 

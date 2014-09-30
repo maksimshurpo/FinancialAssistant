@@ -3,9 +3,11 @@ package com.shurpo.financialassistant.ui.refinancing;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.*;
 import com.shurpo.financialassistant.R;
+import com.shurpo.financialassistant.utils.PreferenceUtil;
 import com.shurpo.financialassistant.utils.WebRequestUtil;
 import com.shurpo.financialassistant.ui.BaseFragment;
 import com.shurpo.financialassistant.ui.adapters.RefRateAdapter;
@@ -13,6 +15,8 @@ import com.shurpo.financialassistant.ui.adapters.RefRateAdapter;
 public class RefinancingRateFragment extends BaseFragment {
 
     private String LOG_TAG = getClass().getName();
+
+    private PreferenceUtil preference;
 
     public static final int REF_RATE_LOADER = 50;
 
@@ -49,7 +53,8 @@ public class RefinancingRateFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_refresh, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        if(!getPreference().isDownloadRefRate()){
+        preference = new PreferenceUtil(getActivity().getApplicationContext());
+        if(!preference.isDownloadRefRate()){
             refreshData(WebRequestUtil.RequestUri.refRate);
         }
     }
@@ -67,6 +72,17 @@ public class RefinancingRateFragment extends BaseFragment {
     @Override
     public void updateData() {
         getActivity().getSupportLoaderManager().restartLoader(REF_RATE_LOADER, null, callbacks);
-        stopProgressActionBar();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    protected SwipeRefreshLayout.OnRefreshListener onRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                refreshData(WebRequestUtil.RequestUri.refRate);
+            }
+        };
     }
 }

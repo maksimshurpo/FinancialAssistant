@@ -9,7 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.text.TextUtils;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.*;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -18,9 +18,8 @@ import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
 import com.shurpo.financialassistant.model.receivers.NetworkReceiver;
 import com.shurpo.financialassistant.model.service.ServiceHelper;
-import com.shurpo.financialassistant.ui.calculate.CalculateFragment;
 import com.shurpo.financialassistant.ui.currency.CurrencyFragment;
-import com.shurpo.financialassistant.utils.DateUtil;
+import com.shurpo.financialassistant.ui.dynamics.DynamicCurrencyFragment;
 import com.shurpo.financialassistant.utils.WebRequestUtil;
 import com.shurpo.financialassistant.ui.metal.MetalRateFragment;
 import com.shurpo.financialassistant.ui.refinancing.RefinancingRateFragment;
@@ -39,8 +38,8 @@ public abstract class BaseFragment extends Fragment {
                 updateData();
             } else {
                 /*if disconnect voice that stop progress action bar*/
-                Toast.makeText(getActivity(), "Нет данных", Toast.LENGTH_SHORT).show();
-                stopProgressActionBar();
+                Toast.makeText(getActivity(), "Нет доступа ", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
             }
         }
     }
@@ -77,6 +76,12 @@ public abstract class BaseFragment extends Fragment {
                 case RefinancingRateFragment.REF_RATE_LOADER:
                     String orderBy = BaseColumns._ID + " DESC";
                     return new CursorLoader(getActivity(), RefRate.CONTENT_URI, null, null, null, orderBy);
+                case DynamicCurrencyFragment.DYNAMIC_LOADER:
+                    if (bundle != null){
+                        select = Currency.CURRENCY_ID + "=?";
+                        selectArgs = new String[]{bundle.getString(LOADER_BUNDLE_KEY)};
+                    }
+                    return new CursorLoader(getActivity(), Currency.CONTENT_URI, null, select, selectArgs, null);
                 default:
                     throw new IllegalArgumentException("Unknown bundle id : " + id);
             }
@@ -97,8 +102,9 @@ public abstract class BaseFragment extends Fragment {
     private LoaderInformationReceiver loaderInformationReceiver;
     private CursorAdapter adapter;
     private PreferenceUtil preference;
-    private ProgressBar progressBar;
     private ListView listView;
+    protected SwipeRefreshLayout swipeRefreshLayout;
+    protected ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,7 +137,12 @@ public abstract class BaseFragment extends Fragment {
 
         //init some views.
         listView = (ListView) view.findViewById(R.id.list_layout);
-        progressBar = (ProgressBar) view.findViewById(R.id.update_rate);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        if (swipeRefreshLayout != null){
+            swipeRefreshLayout.setOnRefreshListener(onRefreshListener());
+            swipeRefreshLayout.setColorSchemeColors(R.color.Aqua, R.color.Azure, R.color.Aqua, R.color.Azure);
+        }
 
     }
 
@@ -149,21 +160,26 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract void updateData();
+    protected abstract SwipeRefreshLayout.OnRefreshListener onRefreshListener();
 
     protected void refreshData(WebRequestUtil.RequestUri requestUri) {
         if (NetworkReceiver.refreshDisplay) {
             ServiceHelper serviceHelper = ServiceHelper.getInstance(getActivity());
             WebRequestUtil webRequest = new WebRequestUtil(getActivity());
             serviceHelper.execute(webRequest.url(requestUri));
-            progressBar.setVisibility(View.VISIBLE);
+            if (progressBar != null){
+                progressBar.setVisibility(View.VISIBLE);
+            }else {
+                swipeRefreshLayout.setRefreshing(true);
+            }
         } else {
             Toast.makeText(getActivity(), "Связь потеряна", Toast.LENGTH_SHORT).show();
-            stopProgressActionBar();
+            if (progressBar != null){
+                progressBar.setVisibility(View.GONE);
+            }else {
+                swipeRefreshLayout.setRefreshing(false);
+            }
         }
-    }
-
-    protected void stopProgressActionBar() {
-        progressBar.setVisibility(View.GONE);
     }
 
     public OnLoaderCallback getOnLoaderCallback() {

@@ -4,9 +4,12 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.*;
 import android.widget.DatePicker;
+import android.widget.Toast;
+
 import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.ui.adapters.CurrencyRateAdapter;
 import com.shurpo.financialassistant.utils.DateUtil;
@@ -34,6 +37,7 @@ public class CurrencyFragment extends BaseFragment {
             }else {
                 getAdapter().swapCursor(cursor);
             }
+            swipeRefreshLayout.setRefreshing(false);
         }
     };
 
@@ -94,6 +98,17 @@ public class CurrencyFragment extends BaseFragment {
     @Override
     protected void updateData() {
         getActivity().getSupportLoaderManager().restartLoader(CURRENCY_LOADER, null, callbacks);
-        stopProgressActionBar();
+    }
+
+    @Override
+    protected SwipeRefreshLayout.OnRefreshListener onRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                getPreference().saveLastDateCurrency(DateUtil.getCurrentDate());
+                refreshData(WebRequestUtil.RequestUri.currencyRate);
+            }
+        };
     }
 }

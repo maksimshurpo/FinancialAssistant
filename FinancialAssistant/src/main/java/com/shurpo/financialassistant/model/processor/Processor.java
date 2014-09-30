@@ -4,6 +4,9 @@ import android.content.ContentResolver;
 import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import android.util.Xml;
+
+import com.shurpo.financialassistant.utils.PreferenceUtil;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -14,6 +17,11 @@ public abstract class Processor {
 
     protected static final String ns = null;
     protected String authority;
+    protected PreferenceUtil preferenceUtil;
+
+    protected Processor(PreferenceUtil preferenceUtil) {
+        this.preferenceUtil = preferenceUtil;
+    }
 
     public void parse(InputStream in, ContentResolver resolver, String authority) throws XmlPullParserException, IOException, RemoteException, OperationApplicationException {
         this.authority = authority;

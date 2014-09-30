@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,13 @@ public class CalculateFragment extends BaseFragment {
     private Button applyCalculateView;
     private Double costCurrency;
     private int positionSpinner;
+
+    private OnLoaderCallback onLoaderCallback = new OnLoaderCallback() {
+        @Override
+        public void onLoadFinished(Loader loader, Object o) {
+            getAdapter().swapCursor((Cursor)o);
+        }
+    };
 
     private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -81,6 +89,7 @@ public class CalculateFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setOnLoaderCallback(onLoaderCallback);
         nominalView = (EditText)view.findViewById(R.id.nominal_currency_calculate);
         resultView = (TextView)view.findViewById(R.id.result_calculate);
         applyCalculateView = (Button)view.findViewById(R.id.apply_calculate);
@@ -94,10 +103,10 @@ public class CalculateFragment extends BaseFragment {
         int[] to = new int[]{android.R.id.text1};
         setAdapter(new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, from, to, 0));
 
-        /*Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString(LOADER_BUNDLE_KEY, DateUtil.getCurrentDate());
         getActivity().getSupportLoaderManager().initLoader(CurrencyFragment.CURRENCY_LOADER, bundle, callbacks);
-*/
+
         spinnerView.setAdapter(getAdapter());
         spinnerView.setOnItemSelectedListener(onItemSelectedListener);
 
@@ -107,5 +116,14 @@ public class CalculateFragment extends BaseFragment {
 
     @Override
     protected void updateData() {
+    }
+
+    @Override
+    protected SwipeRefreshLayout.OnRefreshListener onRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+            }
+        };
     }
 }

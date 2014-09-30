@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/meLightFgG">
-    <include layout="@layout/progress_view"/>
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/meLightFgG"
+    android:orientation="vertical">
 
-    <ListView android:id="@+id/list_layout"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="5dp"
-              style="@style/ListView"/>
+   <!-- <include layout="@layout/progress_view"/>-->
 
-</LinearLayout>
+    <ListView
+        android:id="@+id/list_layout"
+        style="@style/ListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"/>
+
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -3,10 +3,12 @@ package com.shurpo.financialassistant.ui.metal;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import com.shurpo.financialassistant.R;
+import com.shurpo.financialassistant.utils.PreferenceUtil;
 import com.shurpo.financialassistant.utils.WebRequestUtil;
 import com.shurpo.financialassistant.ui.BaseFragment;
 import com.shurpo.financialassistant.ui.adapters.MetalRateAdapter;
@@ -15,6 +17,8 @@ import com.shurpo.financialassistant.utils.DateUtil;
 public class MetalRateFragment extends BaseFragment {
 
     private String LOG_TAG = getClass().getName();
+
+    private PreferenceUtil preference;
 
     public static final int METAL_LOADER = 40;
     private OnLoaderCallback onLoadFinishedCallback = new OnLoaderCallback() {
@@ -50,7 +54,8 @@ public class MetalRateFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_refresh, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        String date = getPreference().getDateMetal();
+        preference = new PreferenceUtil(getActivity().getApplicationContext());
+        String date = preference.getDateMetal();
         String currentDate = DateUtil.getCurrentDate();
         //update data when date is new day
         if (TextUtils.isEmpty(date) || !date.equals(currentDate)){
@@ -71,7 +76,17 @@ public class MetalRateFragment extends BaseFragment {
     @Override
     public void updateData() {
         getActivity().getSupportLoaderManager().restartLoader(METAL_LOADER, null, callbacks);
-        stopProgressActionBar();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    protected SwipeRefreshLayout.OnRefreshListener onRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                refreshData(WebRequestUtil.RequestUri.metal);
+            }
+        };
+    }
 }

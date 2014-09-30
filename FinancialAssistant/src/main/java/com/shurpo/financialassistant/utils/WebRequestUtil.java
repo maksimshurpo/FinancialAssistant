@@ -5,11 +5,6 @@ import android.content.Context;
 import com.shurpo.financialassistant.model.processor.ProcessorFactory;
 
 public class WebRequestUtil {
-/*
-    public static final int CURRENCY_RATE_KEY = 1;
-    public static final int DYNAMIC_KEY = 2;
-    public static final int REF_RATE_KEY = 3;
-    public static final int METAL_KEY = 4;*/
 
     public enum RequestUri {
         currencyRate, dynamic, refRate, metal;
