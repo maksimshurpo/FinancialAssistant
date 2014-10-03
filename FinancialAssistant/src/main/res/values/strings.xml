@@ -12,11 +12,11 @@
     <string name="about_app_dialog_message">Приложение Financial Assistant позволяет просматривать стоимости валют, драгоценных металов и ставок рефинансирования в национальном банке РБ с указанием даты. Так же существует возможность расчёта стоимости валюты по указанному номиналу.</string>
     
     <string-array name="drawer_texts">
-        <item>Архив курсов валют</item>
-        <item>Курс металла</item>
-        <item>Ставка рефинансирования</item>
-        <item>Конвертер валют</item>
-        <item>Динамика валют</item>
+        <item>Курс Валют</item>
+        <item>Курс Металла</item>
+        <item>Ставка Рефинансирования</item>
+        <item>Конвертер Валют</item>
+        <item>Динамика Валют</item>
     </string-array>
 
     <string name="currency_rate_favourite_tab">Курс валюты</string>

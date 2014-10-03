@@ -14,6 +14,7 @@ import android.view.*;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.shurpo.financialassistant.R;
 import com.shurpo.financialassistant.model.provider.FinancialAssistantContract.*;
 import com.shurpo.financialassistant.model.receivers.NetworkReceiver;
@@ -39,7 +40,9 @@ public abstract class BaseFragment extends Fragment {
             } else {
                 /*if disconnect voice that stop progress action bar*/
                 Toast.makeText(getActivity(), "Нет доступа ", Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
+                if (swipeRefreshLayout != null) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         }
     }
@@ -77,7 +80,7 @@ public abstract class BaseFragment extends Fragment {
                     String orderBy = BaseColumns._ID + " DESC";
                     return new CursorLoader(getActivity(), RefRate.CONTENT_URI, null, null, null, orderBy);
                 case DynamicCurrencyFragment.DYNAMIC_LOADER:
-                    if (bundle != null){
+                    if (bundle != null) {
                         select = Currency.CURRENCY_ID + "=?";
                         selectArgs = new String[]{bundle.getString(LOADER_BUNDLE_KEY)};
                     }
@@ -139,7 +142,7 @@ public abstract class BaseFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.list_layout);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        if (swipeRefreshLayout != null){
+        if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setOnRefreshListener(onRefreshListener());
             swipeRefreshLayout.setColorSchemeColors(R.color.Aqua, R.color.Azure, R.color.Aqua, R.color.Azure);
         }
@@ -160,6 +163,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract void updateData();
+
     protected abstract SwipeRefreshLayout.OnRefreshListener onRefreshListener();
 
     protected void refreshData(WebRequestUtil.RequestUri requestUri) {
@@ -167,16 +171,16 @@ public abstract class BaseFragment extends Fragment {
             ServiceHelper serviceHelper = ServiceHelper.getInstance(getActivity());
             WebRequestUtil webRequest = new WebRequestUtil(getActivity());
             serviceHelper.execute(webRequest.url(requestUri));
-            if (progressBar != null){
+            if (progressBar != null) {
                 progressBar.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 swipeRefreshLayout.setRefreshing(true);
             }
         } else {
             Toast.makeText(getActivity(), "Связь потеряна", Toast.LENGTH_SHORT).show();
-            if (progressBar != null){
+            if (progressBar != null) {
                 progressBar.setVisibility(View.GONE);
-            }else {
+            } else {
                 swipeRefreshLayout.setRefreshing(false);
             }
         }
